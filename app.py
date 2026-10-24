@@ -5,393 +5,880 @@ import pandas as pd
 import streamlit as st
 from home import show_home
 
-#.venv\Scripts\Activate.ps1
-# streamlit run app.py
-
-
 # Set page configuration
 st.set_page_config(
-    page_title="Soulplanet Health & Wellness Portal",
+    page_title="Align Health | Thoughtful Clinical Diagnostics & Care",
     page_icon="🩺",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for styling (resembling the Soulplanet design: teals, navies, elegant cards, and modern typography)
+# --- ALIGN HEALTHCARE DESIGN SYSTEM CSS ---
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
-    /* Hide default Streamlit elements for pure branding */
+    :root {
+        --navy: #1F3A4D;
+        --sky: #7FB3D5;
+        --sky-light: #EBF3F8;
+        --sand: #EDE6DA;
+        --sand-light: #F8F6F2;
+        --muted: #F4F7F9;
+        --muted-foreground: #6C8291;
+        --border: #DCE4E8;
+        --white: #FFFFFF;
+        --success: #10B981;
+        --danger: #EF4444;
+        --warning: #F59E0B;
+    }
+
+    /* Hide default Streamlit adornments */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     [data-testid="stHeader"] {background-color: transparent !important;}
 
-    /* Global styling */
-    html, body, [data-testid="stAppViewContainer"] {
-        font-family: 'Inter', sans-serif;
-        background-color: #F8FAFC;
-        color: #1E293B;
+    /* Global typography & canvas */
+    html, body, [data-testid="stAppViewContainer"], .main {
+        font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        background-color: #FFFFFF !important;
+        color: var(--navy) !important;
+        -webkit-font-smoothing: antialiased;
     }
 
-    h1, h2, h3, h4, h5, h6 {
-        font-family: 'Outfit', sans-serif;
-        font-weight: 700;
-        color: #0F172A;
+    .block-container {
+        padding-top: 1.5rem !important;
+        padding-bottom: 3.5rem !important;
+        max-width: 1180px !important;
     }
 
-    /* Target all Streamlit widget labels to color them black and style them cleanly */
-    div[data-testid="stWidgetLabel"] p, label, .stSlider label, .stSelectbox label, .stNumberInput label {
-        color: #0F172A !important;
+    h1, h2, h3, h4, .align-display-heading, .align-hero-title, .align-philosophy-quote {
+        font-family: 'Cormorant Garamond', Georgia, serif !important;
+        font-weight: 400 !important;
+        color: var(--navy) !important;
+        letter-spacing: -0.025em !important;
+    }
+
+    p, span, label, div {
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    /* Force all links to look clean with no browser blue underlines */
+    a, a:visited, a:hover, a:active {
+        text-decoration: none !important;
+        color: inherit !important;
+    }
+
+    /* Top Brand Bar */
+    .align-site-header {
+        position: relative;
+        width: 100%;
+        padding: 0.75rem 0 1.25rem 0;
+        margin-bottom: 1.75rem;
+        border-bottom: 1px solid var(--border);
+        background-color: #FFFFFF;
+    }
+    .align-header-rail {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .align-brand-wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none !important;
+    }
+    .align-brand-wrap:hover {
+        opacity: 0.9;
+    }
+    .align-logo-title {
+        font-family: 'Cormorant Garamond', serif !important;
+        font-size: 36px;
+        font-weight: 400;
+        line-height: 0.85;
+        color: var(--navy);
+        letter-spacing: -0.04em;
+    }
+    .align-logo-dot {
+        color: var(--sky);
+    }
+    .align-logo-sub {
+        display: block;
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        color: var(--muted-foreground);
+        font-weight: 600;
+        margin-top: 4px;
+        text-decoration: none !important;
+    }
+    .align-header-meta {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    .align-location-tag {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--muted-foreground);
+        font-weight: 500;
+    }
+    .align-header-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border: 1px solid var(--navy);
+        color: var(--navy) !important;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-weight: 600;
+        text-decoration: none !important;
+        transition: all 0.25s ease;
+    }
+    .align-header-cta:hover {
+        background-color: var(--navy);
+        color: #FFFFFF !important;
+    }
+
+    /* Subpage Header */
+    .align-page-header {
+        background-color: var(--sand-light);
+        border: 1px solid var(--border);
+        padding: 2.5rem 2rem;
+        border-radius: 3px;
+        margin-bottom: 2rem;
+    }
+
+    /* Hero Section */
+    .align-hero {
+        position: relative;
+        min-height: 500px;
+        background-color: var(--navy);
+        background-image: url('https://images.hostinger.com/01b11d58-1bbc-4a81-8ee3-647467389668/450992d7-be7c-42e6-a2fd-635e663da463.png');
+        background-size: cover;
+        background-position: center;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 3.5rem;
+        color: #FFFFFF;
+    }
+    .align-hero-wash {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(31, 58, 77, 0.93) 0%, rgba(31, 58, 77, 0.74) 100%);
+    }
+    .align-hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 4.5rem 3rem 3.5rem 3rem;
+        max-width: 800px;
+    }
+    .align-eyebrow {
+        font-size: 10px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    .text-sky {
+        color: var(--sky);
+    }
+    .text-muted {
+        color: var(--muted-foreground);
+    }
+    .align-hero-title {
+        color: #FFFFFF !important;
+        font-size: clamp(2.8rem, 5.2vw, 4.6rem) !important;
+        line-height: 1.02 !important;
+        margin-bottom: 1.25rem !important;
+    }
+    .italic {
+        font-style: italic;
+    }
+    .font-light {
+        font-weight: 300;
+    }
+    .align-hero-description {
+        font-size: 15px;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.88);
+        max-width: 560px;
+        margin-bottom: 2rem;
+    }
+    .align-hero-cta-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+        margin-bottom: 1.75rem;
+    }
+    .align-action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 26px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-weight: 600;
+        text-decoration: none !important;
+        transition: all 0.25s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
+    }
+    .align-action-btn.primary {
+        background-color: var(--sky);
+        color: var(--navy) !important;
+    }
+    .align-action-btn.primary:hover {
+        background-color: #FFFFFF;
+        color: var(--navy) !important;
+    }
+    .align-action-btn.outlined {
+        background-color: transparent;
+        border-color: rgba(255, 255, 255, 0.7);
+        color: #FFFFFF !important;
+    }
+    .align-action-btn.outlined:hover {
+        background-color: #FFFFFF;
+        color: var(--navy) !important;
+    }
+    .align-hero-tagline {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.75);
+    }
+    .align-hero-side-note {
+        position: absolute;
+        right: 28px;
+        bottom: 45px;
+        writing-mode: vertical-rl;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        color: rgba(255, 255, 255, 0.7);
+        z-index: 2;
+    }
+
+    /* Sections */
+    .align-section {
+        padding: 3.5rem 0;
+    }
+    .bg-secondary {
+        background-color: var(--sand-light);
+        padding: 3.5rem 2rem;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        border-radius: 4px;
+        margin-bottom: 2rem;
+    }
+    .bg-muted {
+        background-color: var(--muted);
+        padding: 3.5rem 2rem;
+        border-radius: 4px;
+        margin-bottom: 2rem;
+    }
+    .align-center-text {
+        text-align: center;
+    }
+    .align-container {
+        width: 100%;
+        max-width: 1140px;
+        margin: 0 auto;
+    }
+    .align-narrow-container {
+        width: 100%;
+        max-width: 820px;
+        margin: 0 auto;
+    }
+    .align-section-eyebrow {
+        font-size: 10px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: var(--muted-foreground);
+        margin-bottom: 0.65rem;
+    }
+    .align-display-heading {
+        font-size: clamp(2.2rem, 3.8vw, 3.5rem) !important;
+        line-height: 1.05 !important;
+        margin-bottom: 1rem !important;
+    }
+    .align-body-text {
+        font-size: 14px;
+        line-height: 1.8;
+        color: #4A6375;
+    }
+
+    /* Split Grid */
+    .align-split-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3.5rem;
+        align-items: center;
+    }
+    @media (max-width: 850px) {
+        .align-split-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        .align-hero-side-note {
+            display: none;
+        }
+    }
+
+    /* Figures and Images */
+    .align-figure {
+        margin: 0;
+    }
+    .align-image-frame {
+        background-color: var(--sand);
+        border-radius: 3px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+    }
+    .align-img-cover {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+    .align-image-frame:hover .align-img-cover {
+        transform: scale(1.025);
+    }
+    .align-caption {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        color: var(--muted-foreground);
+        margin-top: 8px;
+    }
+
+    /* Credentials Box */
+    .align-credentials-box {
+        margin-top: 1.75rem;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 1.25rem 0;
+    }
+    .align-credentials-title {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--navy);
+        margin-bottom: 0.65rem;
+    }
+    .align-credentials-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .align-credentials-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: #4A6375;
+        margin-bottom: 0.45rem;
+    }
+    .check-icon {
+        color: var(--sky);
+        font-weight: bold;
+    }
+
+    /* Specialty Care Cards */
+    .align-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 2.5rem;
+    }
+    .align-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background-color: #FFFFFF;
+        border: 1px solid var(--border);
+        padding: 5px 12px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-weight: 600;
+        color: var(--navy);
+    }
+    .status-dot {
+        width: 7px;
+        height: 7px;
+        background-color: var(--success);
+        border-radius: 50%;
+        display: inline-block;
+    }
+    .align-specialty-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.75rem;
+    }
+    @media (max-width: 900px) {
+        .align-specialty-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    .align-care-card {
+        background-color: #FFFFFF;
+        border: 1px solid var(--border);
+        padding: 1.5rem;
+        border-radius: 3px;
+        transition: all 0.25s ease;
+    }
+    .align-care-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px -8px rgba(31, 58, 77, 0.08);
+        border-color: #CBD5E1;
+    }
+    .card-aspect {
+        aspect-ratio: 4 / 3;
+        margin-bottom: 1.25rem;
+    }
+    .align-card-number {
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted-foreground);
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+    }
+    .align-card-title {
+        font-size: 24px !important;
+        line-height: 1.15 !important;
+        margin-bottom: 0.65rem !important;
+    }
+    .align-card-desc {
+        font-size: 13px;
+        line-height: 1.7;
+        color: #4A6375;
+        margin-bottom: 1rem;
+    }
+    .align-card-details {
+        border-top: 1px solid var(--border);
+        padding-top: 0.85rem;
+    }
+    .align-details-text {
+        font-size: 12px;
+        line-height: 1.7;
+        color: #64748B;
+        margin-bottom: 0.5rem;
+    }
+    .align-metric-tag {
+        display: inline-block;
+        background-color: var(--sky-light);
+        color: var(--navy);
+        padding: 3px 8px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    /* Philosophy Quote */
+    .align-philosophy-quote {
+        font-size: clamp(1.8rem, 3.2vw, 2.8rem) !important;
+        line-height: 1.2 !important;
+        max-width: 760px;
+        margin: 0 auto !important;
+    }
+
+    /* Steps List */
+    .align-steps-list {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .align-step-item {
+        display: flex;
+        gap: 1.25rem;
+        border-top: 1px solid var(--border);
+        padding: 1.5rem 0;
+    }
+    .align-step-num {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        color: var(--muted-foreground);
+        padding-top: 3px;
+    }
+    .align-step-title {
+        font-size: 20px !important;
+        line-height: 1.2 !important;
+        margin-bottom: 0.4rem !important;
+    }
+
+    /* Patient Card */
+    .align-patient-card {
+        background-color: #FFFFFF;
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--navy);
+        padding: 1.5rem;
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .align-patient-card.safe {
+        border-left-color: var(--success);
+    }
+    .align-patient-card.danger {
+        border-left-color: var(--danger);
+        background-color: #FFF9F9;
+    }
+    .align-patient-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 0.65rem;
+        margin-bottom: 0.85rem;
+    }
+    .align-patient-name {
+        font-family: 'Cormorant Garamond', serif !important;
+        font-size: 22px;
+        margin: 0;
+        color: var(--navy);
+    }
+    .align-patient-sub {
+        font-size: 11px;
+        color: var(--muted-foreground);
+    }
+    .align-badge {
+        padding: 3px 8px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+    .align-badge.success {
+        background-color: #ECFDF5;
+        color: #065F46;
+    }
+    .align-badge.danger {
+        background-color: #FEF2F2;
+        color: #991B1B;
+    }
+    .align-patient-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        font-size: 13px;
+        color: #334155;
+    }
+    .align-tip-box {
+        background-color: var(--sand-light);
+        border: 1px solid var(--border);
+        padding: 0.85rem 1.15rem;
+        font-size: 13px;
+        color: var(--navy);
+        margin-top: 0.65rem;
+    }
+
+    /* Timeline Box */
+    .align-timeline-box {
+        border-left: 2px solid var(--navy);
+        padding-left: 1.25rem;
+        margin-top: 1.5rem;
+    }
+    .align-timeline-header {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 0.65rem;
+        color: var(--navy);
+    }
+    .align-timeline-item {
+        font-size: 13px;
+        color: #4A6375;
+        margin-bottom: 0.45rem;
+    }
+
+    /* Testimonial Quote */
+    .align-quote-mark {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 54px;
+        color: var(--sky);
+        line-height: 1;
+        margin-top: 0.5rem;
+    }
+    .align-story-quote {
+        font-family: 'Cormorant Garamond', serif !important;
+        font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+        line-height: 1.35;
+        color: var(--navy);
+        max-width: 740px;
+        margin: 0 auto;
+    }
+    .align-story-author {
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted-foreground);
+        font-weight: 600;
+        margin-top: 1.25rem;
+    }
+    .align-story-dots {
+        display: flex;
+        justify-content: center;
+        gap: 7px;
+        margin-top: 1.25rem;
+    }
+    .align-story-dots .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: var(--border);
+    }
+    .align-story-dots .dot.active {
+        background-color: var(--navy);
+    }
+
+    /* Contact Details */
+    .align-contact-details {
+        margin-top: 1.75rem;
+        border-top: 1px solid var(--border);
+        padding-top: 1.25rem;
+    }
+    .contact-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 13px;
+        margin-bottom: 1.15rem;
+        color: var(--navy);
+    }
+    .contact-icon {
+        font-size: 16px;
+        color: var(--navy);
+    }
+
+    /* Streamlit Control Overrides */
+    div[data-testid="stWidgetLabel"] p, label {
+        font-size: 11px !important;
         font-weight: 600 !important;
-        font-family: 'Outfit', sans-serif !important;
-        font-size: 14px !important;
-        margin-bottom: 0.5rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.1em !important;
+        color: var(--navy) !important;
+        margin-bottom: 0.35rem !important;
     }
 
-    /* Style selectboxes/dropdowns background and text color to look premium */
-    div[data-baseweb="select"] > div {
+    div[data-baseweb="input"], div[data-baseweb="select"] > div {
         background-color: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        color: #0F172A !important;
-        border-radius: 10px !important;
-        padding: 2px 4px !important;
-        font-size: 14px !important;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 2px !important;
+        color: var(--navy) !important;
+        box-shadow: none !important;
     }
-    div[data-baseweb="select"] > div:hover {
-        border-color: #0D9488 !important;
-    }
-
-    /* Selectbox icon */
-    div[data-baseweb="select"] svg {
-        fill: #64748B !important;
+    div[data-baseweb="input"]:focus-within, div[data-baseweb="select"] > div:focus-within {
+        border-color: var(--sky) !important;
+        box-shadow: 0 0 0 1px var(--sky) !important;
     }
 
-    /* Number inputs and general inputs background and text */
-    div[data-baseweb="input"] {
-        background-color: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        border-radius: 10px !important;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-    }
-    div[data-baseweb="input"]:hover {
-        border-color: #0D9488 !important;
-    }
-    div[data-baseweb="input"]:focus-within {
-        border-color: #0D9488 !important;
-        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15) !important;
-    }
-    div[data-baseweb="input"] input {
-        color: #0F172A !important;
-        background-color: #FFFFFF !important;
-        border: none !important;
-        font-size: 14px !important;
-    }
-
-    /* Number input buttons */
-    div[data-testid="stNumberInput"] button {
-        background-color: #F1F5F9 !important;
-        border: none !important;
-        color: #475569 !important;
-        border-radius: 6px !important;
-        margin: 2px !important;
-    }
-    div[data-testid="stNumberInput"] button:hover {
-        background-color: #E2E8F0 !important;
-        color: #0F172A !important;
-    }
-
-    /* Form styling as a premium card */
+    /* Streamlit Form Card */
     div[data-testid="stForm"] {
         background-color: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        border-radius: 16px !important;
-        padding: 2.5rem !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 3px !important;
+        padding: 2.25rem !important;
+        box-shadow: 0 4px 12px rgba(31, 58, 77, 0.03) !important;
         margin-bottom: 2rem !important;
     }
 
-    /* Custom form spacing */
-    div[data-testid="stForm"] div.element-container {
-        margin-bottom: 1.5rem !important;
-    }
-
-    /* Slider styling adjustments */
-    div[data-testid="stSlider"] div[role="slider"] {
-        background-color: #0D9488 !important;
-        border: 2px solid #FFFFFF !important;
-    }
-
-    /* Sidebar styling overrides */
-    section[data-testid="stSidebar"] {
-        background-color: #FFFFFF !important;
-        border-right: 1px solid #E2E8F0 !important;
-    }
-
-    /* Logo & Header */
-    .header-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        background-color: #FFFFFF;
-        border-bottom: 1px solid #E2E8F0;
-        margin-bottom: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-    }
-    .logo-container {
-        display: flex;
-        align-items: center;
-    }
-    .logo-text {
-        font-size: 26px;
-        font-weight: 800;
-        color: #0D9488;
-        letter-spacing: -0.5px;
-        font-family: 'Outfit', sans-serif;
-    }
-    .logo-tagline {
-        font-size: 11px;
-        color: #64748B;
-        margin-left: 8px;
-        font-weight: 400;
-    }
-    .nav-links {
-        display: flex;
-        gap: 1.5rem;
-        font-family: 'Outfit', sans-serif;
-        font-weight: 500;
-        color: #475569;
-        font-size: 14px;
-    }
-
-    /* Hero Banner */
-    .hero-container {
-        background: linear-gradient(135deg, #075E54 0%, #0F766E 50%, #0D9488 100%);
-        color: #FFFFFF;
-        padding: 3.5rem 2rem;
-        border-radius: 20px;
-        margin-bottom: 2.5rem;
-        text-align: center;
-        box-shadow: 0 10px 30px -5px rgba(13, 148, 136, 0.2);
-        position: relative;
-        overflow: hidden;
-    }
-    .hero-container::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
-        pointer-events: none;
-    }
-    .hero-badge {
-        background-color: rgba(204, 251, 241, 0.15);
-        color: #CCFBF1;
-        padding: 0.35rem 1rem;
-        border-radius: 9999px;
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        display: inline-block;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(204, 251, 241, 0.25);
-    }
-    .hero-title {
-        font-size: 36px;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        color: #FFFFFF !important;
-        letter-spacing: -0.5px;
-    }
-    .hero-subtitle {
-        font-size: 16px;
-        font-weight: 300;
-        color: #CCFBF1;
-        margin-bottom: 0;
-    }
-
-    /* Tabs pill custom styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 12px !important;
-        background-color: #F1F5F9 !important;
-        padding: 8px !important;
-        border-radius: 12px !important;
-        border: 1px solid #E2E8F0 !important;
-    }
-    .stTabs [data-baseweb="tab"] {
-        height: 48px !important;
-        background-color: transparent !important;
-        border-radius: 10px !important;
-        color: #475569 !important;
-        font-family: 'Outfit', sans-serif !important;
-        font-weight: 600 !important;
-        font-size: 15px !important;
-        border: none !important;
-        padding: 0 24px !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #0D9488 !important;
-        color: #FFFFFF !important;
-        box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25) !important;
-    }
-    .stTabs [data-baseweb="tab"]:hover:not([aria-selected="true"]) {
-        background-color: #E2E8F0 !important;
-        color: #0F172A !important;
-    }
-
-    /* Styled buttons */
+    /* Streamlit Button */
     .stButton > button {
-        background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%) !important;
+        background-color: var(--navy) !important;
         color: #FFFFFF !important;
-        font-family: 'Outfit', sans-serif !important;
-        font-weight: 700 !important;
-        font-size: 16px !important;
-        padding: 0.9rem 2rem !important;
-        border-radius: 12px !important;
-        border: none !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.1), 0 2px 4px -1px rgba(13, 148, 136, 0.06) !important;
-        width: 100%;
-        margin-top: 1.5rem !important;
+        font-family: 'DM Sans', sans-serif !important;
+        font-size: 11px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.16em !important;
+        font-weight: 600 !important;
+        padding: 14px 28px !important;
+        border-radius: 0px !important;
+        border: 1px solid var(--navy) !important;
+        transition: all 0.25s ease !important;
+        width: 100% !important;
+        margin-top: 1.25rem !important;
     }
     .stButton > button:hover {
-        background: linear-gradient(135deg, #0F766E 0%, #0D9488 100%) !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.3) !important;
+        background-color: var(--sky) !important;
+        border-color: var(--sky) !important;
+        color: var(--navy) !important;
+        transform: translateY(-1px) !important;
     }
 
-    /* Prediction Card Display */
-    .result-card {
+    /* Result Card */
+    .align-result-card {
         background-color: #FFFFFF;
-        border-radius: 16px;
+        border: 1px solid var(--border);
+        border-left: 5px solid var(--navy);
         padding: 2.25rem;
-        border-left: 6px solid #0D9488;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.02), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
-        margin-top: 1.5rem;
-        border: 1px solid #E2E8F0;
-        border-left-width: 6px;
+        margin-top: 1.75rem;
+        margin-bottom: 1.75rem;
     }
-    .result-card.danger {
-        border-left-color: #EF4444;
-        background-color: #FEF2F2;
-        border-top-color: #FEE2E2;
-        border-right-color: #FEE2E2;
-        border-bottom-color: #FEE2E2;
+    .align-result-card.success {
+        border-left-color: var(--success);
+        background-color: #F8FCFA;
     }
-    .result-card.success {
-        border-left-color: #10B981;
-        background-color: #ECFDF5;
-        border-top-color: #D1FAE5;
-        border-right-color: #D1FAE5;
-        border-bottom-color: #D1FAE5;
+    .align-result-card.danger {
+        border-left-color: var(--danger);
+        background-color: #FFF9F9;
     }
-    .result-card.warning {
-        border-left-color: #F59E0B;
-        background-color: #FFFBEB;
-        border-top-color: #FEF3C7;
-        border-right-color: #FEF3C7;
-        border-bottom-color: #FEF3C7;
+    .align-result-card.warning {
+        border-left-color: var(--warning);
+        background-color: #FFFDF7;
     }
-    .result-header {
-        font-family: 'Outfit', sans-serif;
-        font-size: 22px;
-        font-weight: 800;
+    .align-result-status {
+        font-family: 'Cormorant Garamond', serif !important;
+        font-size: 26px;
+        font-weight: 500;
         margin-bottom: 0.5rem;
     }
-    .result-body {
-        font-size: 15px;
-        line-height: 1.6;
-        color: #334155;
-    }
 
-    /* Diagnostic progress metrics */
-    .metric-progress-container {
+    /* Progress meter */
+    .align-meter-wrap {
+        margin-top: 1.25rem;
         margin-bottom: 1.25rem;
     }
-    .metric-progress-header {
+    .align-meter-header {
         display: flex;
         justify-content: space-between;
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 600;
-        color: #475569;
-        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 5px;
     }
-    .metric-progress-track {
-        background-color: #E2E8F0;
-        border-radius: 9999px;
-        height: 10px;
-        width: 100%;
+    .align-meter-track {
+        height: 6px;
+        background-color: var(--border);
+        border-radius: 2px;
         overflow: hidden;
     }
-    .metric-progress-bar {
+    .align-meter-fill {
         height: 100%;
-        border-radius: 9999px;
+        background-color: var(--navy);
+        transition: width 0.5s ease;
     }
-    .metric-progress-bar.success {
-        background-color: #10B981;
+    .align-meter-fill.success {
+        background-color: var(--success);
     }
-    .metric-progress-bar.warning {
-        background-color: #F59E0B;
+    .align-meter-fill.danger {
+        background-color: var(--danger);
     }
-    .metric-progress-bar.danger {
-        background-color: #EF4444;
+    .align-meter-fill.warning {
+        background-color: var(--warning);
     }
 
-    /* Info card grid styling */
-    .info-card {
+    /* Recommendation tile */
+    .align-rec-tile {
         background-color: #FFFFFF;
-        border-radius: 12px;
-        padding: 1.5rem;
-        text-align: center;
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
-        transition: all 0.3s ease;
+        border: 1px solid var(--border);
+        padding: 0.85rem 1.15rem;
+        font-size: 13px;
+        color: var(--navy);
+        margin-bottom: 0.45rem;
     }
-    .info-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-        border-color: #CBD5E1;
+
+    /* Sidebar Styling */
+    section[data-testid="stSidebar"] {
+        background-color: #FAFBFB !important;
+        border-right: 1px solid var(--border) !important;
     }
-    .info-icon {
-        font-size: 32px;
-        margin-bottom: 0.75rem;
+    section[data-testid="stSidebar"] .stRadio label {
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        text-transform: none !important;
+        letter-spacing: 0.02em !important;
+        color: var(--navy) !important;
     }
-    .info-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: #0F172A;
+
+    /* Footer */
+    .align-site-footer {
+        background-color: var(--navy);
+        color: #FFFFFF;
+        padding: 3.5rem 2rem 2rem 2rem;
+        margin-top: 4rem;
+        border-radius: 4px;
+    }
+    .align-footer-container {
+        max-width: 1140px;
+        margin: 0 auto;
+    }
+    .align-footer-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        padding-bottom: 2.5rem;
+        margin-bottom: 2.5rem;
+    }
+    .align-footer-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+        padding-bottom: 2.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    @media (max-width: 768px) {
+        .align-footer-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+        .align-footer-top {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+    }
+    .align-footer-col h4 {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-family: 'DM Sans', sans-serif !important;
+        font-size: 10px !important;
+        letter-spacing: 0.2em !important;
+        text-transform: uppercase !important;
+        margin-bottom: 0.85rem !important;
+    }
+    .align-footer-col ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .align-footer-col li {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
         margin-bottom: 0.5rem;
     }
-    .info-desc {
-        font-size: 13px;
-        color: #64748B;
-        line-height: 1.5;
+    .align-footer-disclaimer {
+        font-size: 11px;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 1.75rem;
     }
-
-    /* Clean divider */
-    hr {
-        margin: 2.5rem 0;
-        border: 0;
-        border-top: 1px solid #E2E8F0;
+    .align-footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 1.25rem;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Load cached models and encoders
+# --- LOAD CACHED MODELS AND ENCODERS ---
 @st.cache_resource
 def load_models_and_encoders():
-    # Relative path from project directory
     models_dir = os.path.join(os.path.dirname(__file__), "models")
     
-    # Heart disease model files
     with open(os.path.join(models_dir, "heart_disease_model.pkl"), "rb") as f:
         heart_model = pickle.load(f)
     with open(os.path.join(models_dir, "heart_disease_encoders.pkl"), "rb") as f:
@@ -399,7 +886,6 @@ def load_models_and_encoders():
     with open(os.path.join(models_dir, "heart_disease_columns.pkl"), "rb") as f:
         heart_cols = pickle.load(f)
         
-    # Diabetes model files
     with open(os.path.join(models_dir, "diabetes_model.pkl"), "rb") as f:
         diabetes_model = pickle.load(f)
     with open(os.path.join(models_dir, "diabetes_encoders.pkl"), "rb") as f:
@@ -410,7 +896,6 @@ def load_models_and_encoders():
     return (heart_model, heart_encoders, heart_cols, 
             diabetes_model, diabetes_encoders, diabetes_cols)
 
-# Load model data
 try:
     (heart_model, heart_encoders, heart_cols, 
      diabetes_model, diabetes_encoders, diabetes_cols) = load_models_and_encoders()
@@ -419,25 +904,21 @@ except Exception as e:
     st.error(f"Error loading machine learning models: {e}")
     models_loaded = False
 
-# Safe label encoding function to prevent ValueError with unseen labels
+# Safe label encoding function
 def safe_encode(val, col_name, encoders):
     if col_name not in encoders:
-        # If no label encoder exists for this column, return raw val (assume numerical)
         return val
         
     le = encoders[col_name]
     classes = le.classes_
     
-    # Check if value matches directly in encoder classes
     if val in classes:
         return le.transform([val])[0]
         
-    # Check string representation match
     val_str = str(val)
     if val_str in classes:
         return le.transform([val_str])[0]
         
-    # Try numeric proximity if class labels are numeric
     try:
         numeric_classes = np.array([float(x) for x in classes])
         val_num = float(val)
@@ -446,172 +927,153 @@ def safe_encode(val, col_name, encoders):
     except ValueError:
         pass
         
-    # Fallback to first class index or 0
     return 0
 
-# --- SIDEBAR BRANDING & NAVIGATION ---
+# --- SIDEBAR NAVIGATION (ALIGN BRANDING) ---
 with st.sidebar:
-    st.markdown("""
-    <div style='text-align: center; padding: 1rem 0;'>
-        <div style='font-family: "Outfit", sans-serif; font-size: 28px; font-weight: 800; color: #0D9488;'>Soulplanet</div>
-        <div style='font-size: 11px; color: #64748B;'>Clinical Diagnostics Portal</div>
-    </div>
-    <hr style='margin: 0.5rem 0 1.5rem 0;'>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div style="padding: 1rem 0; border-bottom: 1px solid #DCE4E8; margin-bottom: 1.5rem;">
+<div style="display: flex; align-items: center; gap: 10px;">
+<svg width="22" height="36" viewBox="0 0 25 42" fill="none"><path d="M17 2C-3 13 29 25 8 40" stroke="#1F3A4D" stroke-width="2"></path><path d="M22 4C2 15 34 27 13 42" stroke="#7FB3D5" stroke-width="1.6" opacity=".7"></path></svg>
+<div>
+<span style="font-family:'Cormorant Garamond', serif; font-size:28px; font-weight:400; color:#1F3A4D; line-height:0.9;">align<span style="color:#7FB3D5;">.</span></span>
+<span style="display:block; font-size:8px; text-transform:uppercase; letter-spacing:0.25em; color:#6C8291; font-weight:600;">Health &amp; Diagnostics</span>
+</div>
+</div>
+</div>""", unsafe_allow_html=True)
     
-    st.markdown("<h5 style='font-family: \"Outfit\", sans-serif; color: #0F172A; margin-bottom: 0.5rem;'>Diagnostics Suite Portal</h5>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:10px; text-transform:uppercase; letter-spacing:0.18em; font-weight:600; color:#6C8291; margin-bottom:0.75rem;'>Clinical Navigation</p>", unsafe_allow_html=True)
     page = st.radio(
         "Select Portal View",
-        options=["🏠 Portal Home Dashboard", "❤️ Cardiovascular Diagnostics", "🩸 Diabetic Readmission Analysis"],
+        options=[
+            "🏠 Clinic Overview & Home", 
+            "❤️ Cardiovascular Diagnostics", 
+            "🩸 Diabetic Readmission Analysis"
+        ],
         label_visibility="collapsed"
     )
-    st.markdown("<hr style='margin: 1.5rem 0;'>", unsafe_allow_html=True)
     
-    st.markdown("<h5 style='font-family: \"Outfit\", sans-serif; color: #0F172A; margin-bottom: 1rem;'>Suite Statistics</h5>", unsafe_allow_html=True)
+    st.markdown("<hr style='margin: 1.75rem 0; border:0; border-top:1px solid #DCE4E8;'>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:10px; text-transform:uppercase; letter-spacing:0.18em; font-weight:600; color:#6C8291; margin-bottom:0.85rem;'>Validated Algorithms</p>", unsafe_allow_html=True)
     
-    # Model 1 Metrics
-    st.markdown("""
-    <div style='background-color: #F8FAFC; padding: 1rem; border-radius: 10px; border: 1px solid #E2E8F0; margin-bottom: 1rem;'>
-        <div style='font-weight: 700; font-size: 12px; color: #0D9488; font-family: "Outfit", sans-serif; margin-bottom: 2px;'>CARDIOVASCULAR MODEL</div>
-        <div style='font-size: 11px; color: #64748B; margin-bottom: 10px;'>Random Forest Classifier</div>
-        <div style='display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #334155;'>
-            <span>Model Accuracy:</span>
-            <strong>79.96%</strong>
-        </div>
-        <div style='display: flex; justify-content: space-between; font-size: 12px; color: #334155;'>
-            <span>Trained Features:</span>
-            <strong>20 Columns</strong>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Model 2 Metrics
-    st.markdown("""
-    <div style='background-color: #F8FAFC; padding: 1rem; border-radius: 10px; border: 1px solid #E2E8F0; margin-bottom: 1.5rem;'>
-        <div style='font-weight: 700; font-size: 12px; color: #0D9488; font-family: "Outfit", sans-serif; margin-bottom: 2px;'>DIABETES READMISSION</div>
-        <div style='font-size: 11px; color: #64748B; margin-bottom: 10px;'>XGBoost Classifier</div>
-        <div style='display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #334155;'>
-            <span>Model Accuracy:</span>
-            <strong>53.75%</strong>
-        </div>
-        <div style='display: flex; justify-content: space-between; font-size: 12px; color: #334155;'>
-            <span>Trained Features:</span>
-            <strong>32 Columns</strong>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <hr style='margin: 1.5rem 0;'>
-    <div style='font-size: 11px; color: #94A3B8; text-align: center;'>
-        Active Session: Clinician Mode<br>
-        Version 1.2 (Validated)
-    </div>
-    """, unsafe_allow_html=True)
-
-# --- HEADER BAR ---
-st.markdown("""
-<div class="header-bar">
-    <div class="logo-container">
-        <span class="logo-text">Soulplanet</span>
-        <span class="logo-tagline">Health & Wellness Diagnostics</span>
-    </div>
-    <div class="nav-links">
-        <span>Clinical Suite</span>
-        <span>Ailment Centers</span>
-        <span>Diagnostics Info</span>
-        <span>Wellness Hub</span>
-    </div>
+    # Model 1 Metric Card
+    st.markdown("""<div style='background-color:#FFFFFF; border:1px solid #DCE4E8; padding:1.15rem; margin-bottom:0.85rem;'>
+<div style='font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:#7FB3D5; font-weight:700;'>Random Forest Model</div>
+<div style='font-family:"Cormorant Garamond", serif; font-size:18px; color:#1F3A4D; margin:3px 0;'>Cardiovascular Risk</div>
+<div style='display:flex; justify-content:space-between; font-size:11px; color:#6C8291; margin-top:6px;'>
+<span>Evaluation Accuracy</span>
+<strong style='color:#1F3A4D;'>79.96%</strong>
 </div>
-""", unsafe_allow_html=True)
-
-# --- HERO SECTION ---
-st.markdown("""
-<div class="hero-container">
-    <div class="hero-badge">Clinical Decision Support System</div>
-    <h1 class="hero-title">Cardiovascular & Metabolic Risk Assessment Suite</h1>
-    <p class="hero-subtitle">Machine learning algorithms for early risk classification and hospital readmission prevention.</p>
+</div>""", unsafe_allow_html=True)
+    
+    # Model 2 Metric Card
+    st.markdown("""<div style='background-color:#FFFFFF; border:1px solid #DCE4E8; padding:1.15rem; margin-bottom:1.25rem;'>
+<div style='font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:#7FB3D5; font-weight:700;'>XGBoost Classifier</div>
+<div style='font-family:"Cormorant Garamond", serif; font-size:18px; color:#1F3A4D; margin:3px 0;'>Diabetic Readmission</div>
+<div style='display:flex; justify-content:space-between; font-size:11px; color:#6C8291; margin-top:6px;'>
+<span>Encounters Evaluated</span>
+<strong style='color:#1F3A4D;'>29 Features</strong>
 </div>
-""", unsafe_allow_html=True)
+</div>""", unsafe_allow_html=True)
+    
+    st.markdown("""<div style='font-size:10px; color:#6C8291; text-align:center; padding-top:0.5rem;'>
+Denver, Colorado &middot; Suite 200<br/>Clinical Decision Support v2.4
+</div>""", unsafe_allow_html=True)
 
+# --- TOP MINIMAL HEADER BAR ---
+st.markdown("""<div class="align-site-header">
+<div class="align-header-rail">
+<div class="align-brand-wrap">
+<svg width="22" height="38" viewBox="0 0 25 42" fill="none"><path d="M17 2C-3 13 29 25 8 40" stroke="#1F3A4D" stroke-width="1.8"></path><path d="M22 4C2 15 34 27 13 42" stroke="#7FB3D5" stroke-width="1.5" opacity=".7"></path></svg>
+<div>
+<span class="align-logo-title">align<span class="align-logo-dot">.</span></span>
+<span class="align-logo-sub">CLINICAL HEALTH &amp; DIAGNOSTICS</span>
+</div>
+</div>
+<div class="align-header-meta">
+<span class="align-location-tag">Denver, Colorado</span>
+<span class="align-header-cta">Clinical Decision Support Active</span>
+</div>
+</div>
+</div>""", unsafe_allow_html=True)
+
+# --- PAGE ROUTING ---
 if models_loaded:
-    if page == "🏠 Portal Home Dashboard":
+    if page == "🏠 Clinic Overview & Home":
         show_home()
+        
     elif page == "❤️ Cardiovascular Diagnostics":
-        st.markdown("<h3 style='margin-bottom:1.5rem; color:#0F172A;'>Cardiovascular Risk Profile Analysis</h3>", unsafe_allow_html=True)
-        st.write("Complete the patient details below to estimate the likelihood of heart disease status. The prediction is powered by a Random Forest Classifier trained on patient metrics.")
+        st.markdown("""<div class="align-page-header">
+<p class="align-section-eyebrow">Diagnostic Suite 01 &middot; Clinical Decision Support</p>
+<h2 class="align-display-heading">Cardiovascular Risk <span class="italic">Profile Analysis</span></h2>
+<p class="align-body-text" style="max-width: 680px;">Complete the clinical parameters below to assess heart disease likelihood. Our evaluated Random Forest Classifier cross-references arterial blood pressure, lipid panels, and chronic lifestyle markers.</p>
+</div>""", unsafe_allow_html=True)
         
         with st.form("heart_form"):
             col1, col2 = st.columns(2)
             
-            # Column 1: Core Profile
             with col1:
-                st.markdown("<h5 style='color:#0D9488;'>Core Patient Profile</h5>", unsafe_allow_html=True)
-                age = st.slider("Patient Age (Years)", min_value=1, max_value=120, value=45, step=1)
+                st.markdown("<p class='align-section-eyebrow'>Core Patient Demographics</p>", unsafe_allow_html=True)
+                age = st.slider("Patient Age (Years)", min_value=1, max_value=120, value=48, step=1)
                 
-                # Fetch gender classes dynamically
                 gender_options = list(heart_encoders['Gender'].classes_)
                 gender = st.selectbox("Biological Sex / Gender", options=gender_options)
                 
-                bmi = st.number_input("Body Mass Index (BMI)", min_value=10.0, max_value=65.0, value=24.5, step=0.1)
+                bmi = st.number_input("Body Mass Index (BMI)", min_value=10.0, max_value=65.0, value=25.8, step=0.1)
 
-            # Column 2: Primary Clinical Metrics
             with col2:
-                st.markdown("<h5 style='color:#0D9488;'>Primary Clinical Metrics</h5>", unsafe_allow_html=True)
-                bp = st.number_input("Systolic Blood Pressure (mmHg)", min_value=70.0, max_value=250.0, value=122.0, step=1.0)
-                chol = st.number_input("Total Serum Cholesterol (mg/dL)", min_value=80.0, max_value=500.0, value=195.0, step=1.0)
+                st.markdown("<p class='align-section-eyebrow'>Primary Hemodynamic Vitals</p>", unsafe_allow_html=True)
+                bp = st.number_input("Systolic Blood Pressure (mmHg)", min_value=70.0, max_value=250.0, value=126.0, step=1.0)
+                chol = st.number_input("Total Serum Cholesterol (mg/dL)", min_value=80.0, max_value=500.0, value=205.0, step=1.0)
                 
                 diabetes_options = list(heart_encoders['Diabetes'].classes_)
-                diabetes = st.selectbox("Patient Diagnosed with Diabetes", options=diabetes_options)
+                diabetes = st.selectbox("Diagnosed with Diabetes", options=diabetes_options)
 
-            # Secondary lifestyle and biomarkers hidden under an expander to reduce UI complexity
-            with st.expander("Lifestyle Factors & Secondary Lab Biomarkers (Optional)"):
+            with st.expander("Lifestyle Factors & Secondary Biomarker Assays (Optional)"):
                 exp_col1, exp_col2 = st.columns(2)
                 
                 with exp_col1:
-                    st.markdown("<h6 style='color:#0D9488;'>Lifestyle Details</h6>", unsafe_allow_html=True)
-                    sleep_hours = st.slider("Average Sleep (Hours/Night)", min_value=2.0, max_value=14.0, value=7.0, step=0.5)
+                    st.markdown("<p class='align-section-eyebrow'>Habitual & Circadian Indicators</p>", unsafe_allow_html=True)
+                    sleep_hours = st.slider("Average Nightly Sleep (Hours)", min_value=2.0, max_value=14.0, value=7.0, step=0.5)
                     
                     alcohol_options = list(heart_encoders['Alcohol Consumption'].classes_)
                     alcohol_display = [x if x != '0.0' else 'None / Minimal' for x in alcohol_options]
-                    alcohol_sel = st.selectbox("Alcohol Consumption Level", options=alcohol_display)
+                    alcohol_sel = st.selectbox("Alcohol Consumption Frequency", options=alcohol_display)
                     alcohol = alcohol_options[alcohol_display.index(alcohol_sel)]
                     
                     exercise_options = list(heart_encoders['Exercise Habits'].classes_)
-                    exercise = st.selectbox("Physical Exercise Level", options=exercise_options)
+                    exercise = st.selectbox("Physical Exercise Frequency", options=exercise_options)
                     
                     smoking_options = list(heart_encoders['Smoking'].classes_)
-                    smoking = st.selectbox("Tobacco Smoking Status", options=smoking_options)
+                    smoking = st.selectbox("Active Tobacco Smoking", options=smoking_options)
                     
                     stress_options = list(heart_encoders['Stress Level'].classes_)
-                    stress = st.selectbox("Chronic Stress Level", options=stress_options)
+                    stress = st.selectbox("Self-Reported Stress Level", options=stress_options)
                     
                     sugar_options = list(heart_encoders['Sugar Consumption'].classes_)
-                    sugar = st.selectbox("Sugar Intake Level", options=sugar_options)
+                    sugar = st.selectbox("Refined Sugar Intake", options=sugar_options)
                     
                 with exp_col2:
-                    st.markdown("<h6 style='color:#0D9488;'>Secondary Lab Assays</h6>", unsafe_allow_html=True)
-                    trig = st.number_input("Serum Triglyceride Level (mg/dL)", min_value=40.0, max_value=600.0, value=148.0, step=1.0)
-                    fbs = st.number_input("Fasting Blood Sugar (mg/dL)", min_value=40.0, max_value=300.0, value=92.0, step=1.0)
-                    crp = st.number_input("C-Reactive Protein (CRP) Level (mg/L)", min_value=0.0, max_value=30.0, value=1.2, step=0.1)
-                    homo = st.number_input("Homocysteine Level (µmol/L)", min_value=2.0, max_value=60.0, value=9.8, step=0.1)
+                    st.markdown("<p class='align-section-eyebrow'>Circulatory & Inflammatory Biomarkers</p>", unsafe_allow_html=True)
+                    trig = st.number_input("Serum Triglyceride Level (mg/dL)", min_value=40.0, max_value=600.0, value=150.0, step=1.0)
+                    fbs = st.number_input("Fasting Blood Sugar (mg/dL)", min_value=40.0, max_value=300.0, value=96.0, step=1.0)
+                    crp = st.number_input("C-Reactive Protein (CRP) (mg/L)", min_value=0.0, max_value=30.0, value=1.4, step=0.1)
+                    homo = st.number_input("Homocysteine Level (µmol/L)", min_value=2.0, max_value=60.0, value=10.2, step=0.1)
                     
                     family_options = list(heart_encoders['Family Heart Disease'].classes_)
-                    family = st.selectbox("Family History of Premature Heart Disease", options=family_options)
+                    family = st.selectbox("Family History of Premature CVD", options=family_options)
                     
                     hbp_options = list(heart_encoders['High Blood Pressure'].classes_)
-                    hbp = st.selectbox("Patient Diagnosed with Hypertension", options=hbp_options)
+                    hbp = st.selectbox("Hypertension Diagnosis History", options=hbp_options)
                     
                     hdl_options = list(heart_encoders['Low HDL Cholesterol'].classes_)
-                    hdl = st.selectbox("Present: Low HDL Cholesterol Status", options=hdl_options)
+                    hdl = st.selectbox("Suboptimal Low HDL Level", options=hdl_options)
                     
                     ldl_options = list(heart_encoders['High LDL Cholesterol'].classes_)
-                    ldl = st.selectbox("Present: High LDL Cholesterol Status", options=ldl_options)
+                    ldl = st.selectbox("Elevated LDL Cholesterol Assay", options=ldl_options)
                     
-            submit_heart = st.form_submit_button("Analyze Cardiovascular Risk")
+            submit_heart = st.form_submit_button("Run Cardiovascular Risk Assessment")
             
         if submit_heart:
-            # Map input to features
             input_dict = {
                 'Age': age,
                 'Gender': gender,
@@ -635,25 +1097,15 @@ if models_loaded:
                 'Homocysteine Level': homo
             }
             
-            # Format and Encode in correct columns order
-            encoded_vals = []
-            for col in heart_cols:
-                raw_val = input_dict[col]
-                encoded_val = safe_encode(raw_val, col, heart_encoders)
-                encoded_vals.append(encoded_val)
-                
-            input_features = np.array([encoded_vals])
+            encoded_vals = [safe_encode(input_dict[col], col, heart_encoders) for col in heart_cols]
+            input_df = pd.DataFrame([encoded_vals], columns=heart_cols)
             
-            # Make prediction
-            prob = heart_model.predict_proba(input_features)[0]
-            pred = heart_model.predict(input_features)[0]
+            prob = heart_model.predict_proba(input_df)[0]
+            pred = heart_model.predict(input_df)[0]
             
-            # Get class labels from target encoder
             target_classes = list(heart_encoders['Heart Disease Status'].classes_)
             pred_label = target_classes[pred]
             
-            # Determine color & text depending on prediction
-            # Find index of Yes (case-insensitive)
             yes_index = 0
             for idx, cls in enumerate(target_classes):
                 if str(cls).strip().lower() == 'yes':
@@ -663,135 +1115,112 @@ if models_loaded:
             prob_pct = prob[yes_index] * 100
             
             if pred_label.lower() == 'yes':
-                risk_style = "danger"
-                risk_status = "🚨 High Cardiovascular Risk Detected"
-                risk_color = "#EF4444"
-                progress_class = "danger"
-                clinical_desc = "The random forest classifier has identified high-risk indicators matching heart disease status. Immediate clinical review and biomarker profiling are strongly recommended."
+                card_style = "danger"
+                status_title = "Elevated Cardiovascular Risk Detected"
+                fill_class = "danger"
+                clinical_desc = "The random forest decision-support architecture has detected biomarker and lifestyle indicators consistent with elevated cardiovascular risk. Comprehensive lipid profiling, arterial monitoring, and lifestyle guidance are indicated."
             else:
-                risk_style = "success"
-                risk_status = "✅ Low Cardiovascular Risk Profile"
-                risk_color = "#10B981"
-                progress_class = "success"
-                clinical_desc = "The patient profile corresponds to normal physiological metrics and low cardiovascular risk indicators. Encourage continued health maintenance."
+                card_style = "success"
+                status_title = "Normal Cardiovascular Risk Profile"
+                fill_class = "success"
+                clinical_desc = "The evaluated biometric metrics correspond to low cardiovascular risk parameters. Maintain routine preventive screening and regular physical exercise."
                 
-            st.markdown(f"""
-<div class="result-card {risk_style}">
-<div class="result-header" style="color: {risk_color};">{risk_status}</div>
-<div class="result-body" style="margin-top: 1rem;">
-<div class="metric-progress-container">
-<div class="metric-progress-header">
+            st.markdown(f"""<div class="align-result-card {card_style}">
+<p class="align-section-eyebrow">Diagnostic Assessment Result</p>
+<h3 class="align-result-status">{status_title}</h3>
+<div class="align-meter-wrap">
+<div class="align-meter-header">
 <span>Cardiovascular Risk Factor Probability</span>
-<strong>{prob_pct:.2f}%</strong>
+<strong>{prob_pct:.1f}%</strong>
 </div>
-<div class="metric-progress-track">
-<div class="metric-progress-bar {progress_class}" style="width: {prob_pct}%;"></div>
-</div>
-</div>
-<hr style="margin: 1rem 0; border-top: 1px solid #E2E8F0;">
-<strong>Model Clinical Insight:</strong> {clinical_desc}
+<div class="align-meter-track">
+<div class="align-meter-fill {fill_class}" style="width: {prob_pct}%;"></div>
 </div>
 </div>
-""", unsafe_allow_html=True)
+<p class="align-body-text"><strong>Clinical Insight:</strong> {clinical_desc}</p>
+</div>""", unsafe_allow_html=True)
             
-            # Recommendations grid
-            st.markdown("<h4 style='margin-top:2rem; margin-bottom:1rem;'>Personalized Clinical Recommendations</h4>", unsafe_allow_html=True)
+            st.markdown("<h4 class='align-display-heading' style='font-size:26px !important;'>Personalized Clinical Recommendations</h4>", unsafe_allow_html=True)
             recs = []
-            
-            # Check lifestyle conditions
             if smoking.lower() == 'yes':
-                recs.append("🚬 <strong>Smoking Cessation</strong>: Patient reports active smoking status. Highly recommend enrollment in tobacco cessation counseling and prescription therapy if indicated.")
+                recs.append("🚬 <strong>Smoking Cessation</strong>: Patient indicates active smoking. Advise enrollment in evidence-based cessation support.")
             if exercise.lower() == 'low':
-                recs.append("🏃 <strong>Physical Activity</strong>: Low physical activity levels recorded. Recommend scaling to at least 150 minutes of moderate aerobic exercise per week.")
+                recs.append("🏃 <strong>Physical Conditioning</strong>: Low activity recorded. Recommend progressive transition to 150 minutes of moderate aerobic movement weekly.")
             if bmi > 27.0:
-                recs.append("⚖️ <strong>Weight Management</strong>: Elevated BMI ({:.1f}). Advise calorie restriction, caloric tracking, and potential dietary consult.".format(bmi))
-            if sugar.lower() == 'high':
-                recs.append("🍬 <strong>Sugar Intake Reduction</strong>: High sugar intake noted. Advise patient to replace processed sweets with low-glycemic dietary choices.")
-            if sleep_hours < 6.0:
-                recs.append("💤 <strong>Sleep Hygiene</strong>: Sleep hours ({:.1f} hrs) are below recommended clinical guidelines. Advise regular sleep routines and caffeine restriction.".format(sleep_hours))
-            if stress.lower() == 'high':
-                recs.append("🧠 <strong>Stress Mitigation</strong>: High stress levels recorded. Recommend mindfulness techniques, yoga, or professional wellness consultation.")
-            
-            # Check clinical biomarkers
+                recs.append(f"⚖️ <strong>Body Composition</strong>: Elevated BMI ({bmi:.1f}). Coordinate dietary guidance emphasizing whole, unrefined foods.")
             if bp >= 130.0 or hbp.lower() == 'yes':
-                recs.append("🩺 <strong>Hypertension Control</strong>: Systolic blood pressure is elevated. Advise a sodium-restricted DASH diet and regular home monitoring.")
+                recs.append("🩺 <strong>Arterial Pressure Control</strong>: Systolic blood pressure is elevated. Advise sodium moderation and ambulatory blood pressure logging.")
             if chol >= 240.0 or ldl.lower() == 'yes':
-                recs.append("🥑 <strong>Lipid Panel Optimization</strong>: Hypercholesterolemia. Advise reducing saturated fats, increasing soluble fiber, and check statin eligibility if risk scores are high.")
+                recs.append("🥑 <strong>Lipid Panel Optimization</strong>: Hypercholesterolemia indicators present. Consider detailed apolipoprotein B testing.")
             if crp > 2.0:
-                recs.append("🧪 <strong>Inflammatory Markers</strong>: C-Reactive Protein ({:.1f} mg/L) indicates active systemic inflammation. Inspect dental health, joint pain, or chronic autoimmune symptoms.".format(crp))
-            if homo > 12.0:
-                recs.append("🧬 <strong>Homocysteine Regulation</strong>: Elevated homocysteine ({:.1f} µmol/L). Recommend dietary supplementation with Folic Acid (Vitamin B9), Vitamin B6, and Vitamin B12.".format(homo))
+                recs.append(f"🧪 <strong>Systemic Inflammation</strong>: Elevated CRP ({crp:.1f} mg/L). Inspect periodontal, articular, and metabolic stress factors.")
                 
             if not recs:
-                st.info("✅ Patient profile is within normal range for all clinical and lifestyle parameters. Maintain current wellness routine.")
+                st.info("✅ All physiological parameters fall within clinically recommended ranges.")
             else:
                 for r in recs:
-                    st.markdown(f"<div style='background-color:#FFFFFF; padding:0.75rem 1rem; border-radius:8px; border:1px solid #E2E8F0; margin-bottom:0.5rem;'>{r}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='align-rec-tile'>{r}</div>", unsafe_allow_html=True)
 
     elif page == "🩸 Diabetic Readmission Analysis":
-        st.markdown("<h3 style='margin-bottom:1.5rem; color:#0F172A;'>Diabetic Hospital Readmission Analysis</h3>", unsafe_allow_html=True)
-        st.write("Predict the likelihood of a diabetic patient being readmitted to the hospital based on their clinical record, demographic profile, and medication changes. The model uses an XGBoost Classifier.")
+        st.markdown("""<div class="align-page-header">
+<p class="align-section-eyebrow">Diagnostic Suite 02 &middot; Clinical Decision Support</p>
+<h2 class="align-display-heading">Diabetic Hospital <span class="italic">Readmission Analysis</span></h2>
+<p class="align-body-text" style="max-width: 680px;">Evaluate the likelihood of inpatient hospital readmission within 30 days of discharge. Our XGBoost predictive engine examines previous utilization, medication titrations, and primary diagnosis codes.</p>
+</div>""", unsafe_allow_html=True)
         
         with st.form("diabetes_form"):
             col1, col2 = st.columns(2)
             
-            # Column 1: Core Profile
             with col1:
-                st.markdown("<h5 style='color:#0D9488;'>Core Patient Profile</h5>", unsafe_allow_html=True)
-                
+                st.markdown("<p class='align-section-eyebrow'>Patient Demographics & Inpatient Duration</p>", unsafe_allow_html=True)
                 gender_options = list(diabetes_encoders['gender'].classes_)
                 gender = st.selectbox("Biological Sex", options=gender_options)
                 
                 age_options = list(diabetes_encoders['age'].classes_)
-                age = st.selectbox("Age Range Bracket", options=age_options)
+                age = st.selectbox("Age Bracket", options=age_options)
                 
-                time_in_hospital = st.slider("Time Spent in Hospital (Days)", min_value=1, max_value=14, value=3)
+                time_in_hospital = st.slider("Length of Hospitalization (Days)", min_value=1, max_value=14, value=3)
 
-            # Column 2: Core Clinical Metrics
             with col2:
-                st.markdown("<h5 style='color:#0D9488;'>Primary Clinical Metrics</h5>", unsafe_allow_html=True)
-                
+                st.markdown("<p class='align-section-eyebrow'>Inpatient Procedures & Glycemic Therapy</p>", unsafe_allow_html=True)
                 diag1_options = list(diabetes_encoders['diag_1'].classes_)
-                diag1 = st.selectbox("Primary Diagnosis ICD-9 Code", options=diag1_options, index=diag1_options.index("250") if "250" in diag1_options else 0)
+                diag1 = st.selectbox("Primary Diagnosis Code (ICD-9)", options=diag1_options, index=diag1_options.index("250") if "250" in diag1_options else 0)
                 
-                num_lab_procedures = st.number_input("Number of Lab Procedures", min_value=1, max_value=120, value=40, step=1)
+                num_lab_procedures = st.number_input("Laboratory Procedures Performed", min_value=1, max_value=120, value=42, step=1)
                 
                 diabetes_med_options = list(diabetes_encoders['diabetesMed'].classes_)
-                diabetes_med = st.selectbox("Any Diabetes Medication Prescribed?", options=diabetes_med_options, index=diabetes_med_options.index("Yes"))
+                diabetes_med = st.selectbox("Diabetes Pharmacotherapy Prescribed", options=diabetes_med_options, index=diabetes_med_options.index("Yes"))
 
-            # Advanced clinical parameters expander
-            with st.expander("Advanced Clinical Parameters & Dosing Profiles (Optional)"):
+            with st.expander("Admission Context, Prior Hospital Stays & Medication Titrations"):
                 exp_col1, exp_col2 = st.columns(2)
                 
                 with exp_col1:
-                    st.markdown("<h6 style='color:#0D9488;'>Admission & History Details</h6>", unsafe_allow_html=True)
+                    st.markdown("<p class='align-section-eyebrow'>Utilization History</p>", unsafe_allow_html=True)
                     race_options = list(diabetes_encoders['race'].classes_)
-                    race = st.selectbox("Race / Ethnicity Group", options=race_options)
+                    race = st.selectbox("Ethnicity / Demographic Group", options=race_options)
                     
-                    admission_type = st.slider("Admission Type ID (1: Emergency, 2: Urgent, 3: Elective)", min_value=1, max_value=8, value=1)
-                    admission_src = st.slider("Admission Source ID (1: Physician, 7: Emergency Room)", min_value=1, max_value=25, value=7)
-                    discharge_disp = st.slider("Discharge Disposition ID (1: Discharged to Home, 3: SNF)", min_value=1, max_value=28, value=1)
+                    admission_type = st.slider("Admission Type (1: Emergency, 2: Urgent, 3: Elective)", min_value=1, max_value=8, value=1)
+                    admission_src = st.slider("Admission Source ID", min_value=1, max_value=25, value=7)
+                    discharge_disp = st.slider("Discharge Disposition ID (1: Home)", min_value=1, max_value=28, value=1)
                     
-                    st.markdown("<h6 style='color:#0D9488; margin-top:1rem;'>Prior Year Hospital Utilization</h6>", unsafe_allow_html=True)
-                    num_outpatient = st.number_input("Number of Outpatient Visits (Prior Year)", min_value=0, max_value=40, value=0, step=1)
-                    num_emergency = st.number_input("Number of Emergency Room Visits (Prior Year)", min_value=0, max_value=40, value=0, step=1)
-                    num_inpatient = st.number_input("Number of Inpatient Admissions (Prior Year)", min_value=0, max_value=30, value=0, step=1)
+                    num_outpatient = st.number_input("Prior Year Outpatient Visits", min_value=0, max_value=40, value=0, step=1)
+                    num_emergency = st.number_input("Prior Year Emergency Visits", min_value=0, max_value=40, value=0, step=1)
+                    num_inpatient = st.number_input("Prior Year Inpatient Admissions", min_value=0, max_value=30, value=0, step=1)
                     
                 with exp_col2:
-                    st.markdown("<h6 style='color:#0D9488;'>Secondary Diagnoses & Procedures</h6>", unsafe_allow_html=True)
-                    num_procedures = st.slider("Number of Procedures (During Stay)", min_value=0, max_value=6, value=1)
-                    num_medications = st.number_input("Number of Generic Medications Prescribed", min_value=1, max_value=100, value=15, step=1)
-                    num_diagnoses = st.number_input("Number of Diagnoses Recorded", min_value=1, max_value=20, value=6, step=1)
+                    st.markdown("<p class='align-section-eyebrow'>Diagnoses & Specific Antidiabetic Agents</p>", unsafe_allow_html=True)
+                    num_procedures = st.slider("Number of Inpatient Procedures", min_value=0, max_value=6, value=1)
+                    num_medications = st.number_input("Distinct Medications Administered", min_value=1, max_value=100, value=16, step=1)
+                    num_diagnoses = st.number_input("Total Diagnoses Recorded", min_value=1, max_value=20, value=7, step=1)
                     
                     diag2_options = list(diabetes_encoders['diag_2'].classes_)
-                    diag2 = st.selectbox("Secondary Diagnosis ICD-9 Code", options=diag2_options, index=diag2_options.index("250") if "250" in diag2_options else 0)
+                    diag2 = st.selectbox("Secondary Diagnosis Code", options=diag2_options, index=diag2_options.index("250") if "250" in diag2_options else 0)
                     
                     diag3_options = list(diabetes_encoders['diag_3'].classes_)
-                    diag3 = st.selectbox("Additional Diagnosis ICD-9 Code", options=diag3_options, index=diag3_options.index("250") if "250" in diag3_options else 0)
+                    diag3 = st.selectbox("Tertiary Diagnosis Code", options=diag3_options, index=diag3_options.index("250") if "250" in diag3_options else 0)
                     
-                    st.markdown("<h6 style='color:#0D9488; margin-top:1rem;'>Medication Titrations</h6>", unsafe_allow_html=True)
                     metformin_options = list(diabetes_encoders['metformin'].classes_)
-                    metformin = st.selectbox("Metformin Dosing", options=metformin_options, index=metformin_options.index("No"))
+                    metformin = st.selectbox("Metformin Titration", options=metformin_options, index=metformin_options.index("No"))
                     
                     repaglinide_options = list(diabetes_encoders['repaglinide'].classes_)
                     repaglinide = st.selectbox("Repaglinide Dosing", options=repaglinide_options, index=repaglinide_options.index("No"))
@@ -817,11 +1246,9 @@ if models_loaded:
                     acarbose_options = list(diabetes_encoders['acarbose'].classes_)
                     acarbose = st.selectbox("Acarbose Dosing", options=acarbose_options, index=acarbose_options.index("No"))
                     
-            submit_diabetes = st.form_submit_button("Analyze Readmission Risk")
+            submit_diabetes = st.form_submit_button("Run Diabetic Readmission Analysis")
             
         if submit_diabetes:
-            # Map input to features.
-            # Notice we auto-generate mock ids for 'encounter_id' and 'patient_nbr' since they are required features by the model
             input_dict = {
                 'encounter_id': 1234567,
                 'patient_nbr': 9876543,
@@ -854,152 +1281,143 @@ if models_loaded:
                 'diabetesMed': diabetes_med
             }
             
-            # Format and Encode in correct columns order
-            encoded_vals = []
-            for col in diabetes_cols:
-                raw_val = input_dict[col]
-                encoded_val = safe_encode(raw_val, col, diabetes_encoders)
-                encoded_vals.append(encoded_val)
-                
-            input_features = np.array([encoded_vals])
+            encoded_vals = [safe_encode(input_dict[col], col, diabetes_encoders) for col in diabetes_cols]
+            input_df = pd.DataFrame([encoded_vals], columns=diabetes_cols)
             
-            # Make prediction
-            prob = diabetes_model.predict_proba(input_features)[0]
-            pred = diabetes_model.predict(input_features)[0]
+            prob = diabetes_model.predict_proba(input_df)[0]
+            pred = diabetes_model.predict(input_df)[0]
             
-            # Target labels: '<30', '>30', 'NO'
             target_classes = list(diabetes_encoders['readmitted'].classes_)
             pred_label = target_classes[pred]
             
-            # Map style and display names based on readmission status
             prob_less_30 = prob[target_classes.index('<30')] * 100
             prob_more_30 = prob[target_classes.index('>30')] * 100
             prob_no = prob[target_classes.index('NO')] * 100
             
             if pred_label == '<30':
-                risk_style = "danger"
-                risk_status = "🚨 High Risk: Rapid Readmission Predicted (<30 Days)"
-                risk_color = "#EF4444"
-                clinical_desc = "The XGBoost model predicts a high likelihood of patient readmission within 30 days of discharge. Implement intensive transitional care protocols."
+                card_style = "danger"
+                status_title = "High Risk: Rapid Readmission Predicted (<30 Days)"
+                clinical_desc = "The XGBoost model predicts a high risk of hospital readmission within 30 days of discharge. Transitional follow-up phone calls and nurse visits are strongly indicated."
             elif pred_label == '>30':
-                risk_style = "warning"
-                risk_status = "⚠️ Moderate Risk: Post-Discharge Readmission Predicted (>30 Days)"
-                risk_color = "#F59E0B"
-                clinical_desc = "The XGBoost model predicts moderate readmission risk occurring after 30 days. Recommend standard discharge follow-up and phone check-ins."
+                card_style = "warning"
+                status_title = "Moderate Risk: Late Readmission Predicted (>30 Days)"
+                clinical_desc = "The patient demonstrates indicators for potential long-term readmission beyond 30 days. Recommend standard outpatient scheduling within 14 days."
             else:
-                risk_style = "success"
-                risk_status = "✅ Low Risk: Safe Discharge (No Readmission Predicted)"
-                risk_color = "#10B981"
-                clinical_desc = "The patient profile indicates a low likelihood of readmission. Coordinate routine post-discharge care."
+                card_style = "success"
+                status_title = "Low Risk: Standard Outpatient Discharge (No Readmission Predicted)"
+                clinical_desc = "The clinical parameters indicate low readmission risk. Maintain regular primary care follow-up."
                 
-            st.markdown(f"""
-<div class="result-card {risk_style}">
-<div class="result-header" style="color: {risk_color};">{risk_status}</div>
-<div class="result-body" style="margin-top: 1.5rem;">
-<div class="metric-progress-container">
-<div class="metric-progress-header">
-<span>Rapid Readmission Probability (&lt;30 days)</span>
-<strong>{prob_less_30:.2f}%</strong>
+            st.markdown(f"""<div class="align-result-card {card_style}">
+<p class="align-section-eyebrow">Predictive Analytics Result</p>
+<h3 class="align-result-status">{status_title}</h3>
+<div class="align-meter-wrap">
+<div class="align-meter-header">
+<span>Rapid 30-Day Readmission Risk (&lt;30 days)</span>
+<strong>{prob_less_30:.1f}%</strong>
 </div>
-<div class="metric-progress-track">
-<div class="metric-progress-bar danger" style="width: {prob_less_30}%;"></div>
-</div>
-</div>
-<div class="metric-progress-container">
-<div class="metric-progress-header">
-<span>Late Readmission Probability (&gt;30 days)</span>
-<strong>{prob_more_30:.2f}%</strong>
-</div>
-<div class="metric-progress-track">
-<div class="metric-progress-bar warning" style="width: {prob_more_30}%;"></div>
+<div class="align-meter-track">
+<div class="align-meter-fill danger" style="width: {prob_less_30}%;"></div>
 </div>
 </div>
-<div class="metric-progress-container">
-<div class="metric-progress-header">
+<div class="align-meter-wrap">
+<div class="align-meter-header">
+<span>Late Readmission Risk (&gt;30 days)</span>
+<strong>{prob_more_30:.1f}%</strong>
+</div>
+<div class="align-meter-track">
+<div class="align-meter-fill warning" style="width: {prob_more_30}%;"></div>
+</div>
+</div>
+<div class="align-meter-wrap">
+<div class="align-meter-header">
 <span>Safe Discharge Probability (No Readmission)</span>
-<strong>{prob_no:.2f}%</strong>
+<strong>{prob_no:.1f}%</strong>
 </div>
-<div class="metric-progress-track">
-<div class="metric-progress-bar success" style="width: {prob_no}%;"></div>
-</div>
-</div>
-<hr style="margin: 1rem 0; border-top: 1px solid #E2E8F0;">
-<strong>Model Clinical Insight:</strong> {clinical_desc}
+<div class="align-meter-track">
+<div class="align-meter-fill success" style="width: {prob_no}%;"></div>
 </div>
 </div>
-""", unsafe_allow_html=True)
+<p class="align-body-text"><strong>Clinical Protocol Insight:</strong> {clinical_desc}</p>
+</div>""", unsafe_allow_html=True)
             
-            # Recommendations
-            st.markdown("<h4 style='margin-top:2rem; margin-bottom:1rem;'>Patient Discharge Optimization Recommendations</h4>", unsafe_allow_html=True)
+            st.markdown("<h4 class='align-display-heading' style='font-size:26px !important;'>Discharge Care Protocol Recommendations</h4>", unsafe_allow_html=True)
             recs = []
-            
-            # Utilisation check
             if num_inpatient > 1 or num_emergency > 1:
-                recs.append("🏥 <strong>Frequent Hospital Utilization</strong>: Patient has multiple emergency or inpatient admissions in the prior year. Designate a dedicated clinical care coordinator for post-discharge tracking.")
-            
-            # Length of stay check
+                recs.append("🏥 <strong>Frequent Hospital Utilization</strong>: High prior year admissions. Assign a designated case manager for transitional coordination.")
             if time_in_hospital >= 5:
-                recs.append("🛌 <strong>Extended Length of Stay</strong>: Hospital stay was {} days. Long hospital stays increase deconditioning risk. Recommend physical therapy consult and transitional home health evaluation.".format(time_in_hospital))
-            
-            # Medication volume check
+                recs.append(f"🛌 <strong>Extended Length of Stay</strong>: {time_in_hospital} days in hospital. Screen for physical deconditioning and schedule physical therapy.")
             if num_medications > 20:
-                recs.append("💊 <strong>Polypharmacy Management</strong>: Patient is prescribed {} generic medications. Strongly recommend a pharmacist-led medication reconciliation prior to discharge to prevent adverse drug events.".format(num_medications))
-                
-            # Check discharge disposition
+                recs.append(f"💊 <strong>Polypharmacy Oversight</strong>: {num_medications} medications ordered. Recommend comprehensive pharmacist medication reconciliation.")
             if discharge_disp in [3, 4, 5, 22]:
-                recs.append("🏠 <strong>Subacute Placement Coordination</strong>: Discharge disposition indicates referral to a skilled nursing facility (SNF) or intermediate care. Ensure immediate transfer of clinical summaries and active orders.")
-                
-            # Med changes check
-            changes = []
-            for med_name, val in [("Metformin", metformin), ("Glipizide", glipizide), ("Glyburide", glyburide)]:
-                if val in ["Up", "Down"]:
-                    changes.append(f"{med_name} ({val})")
-            if changes:
-                recs.append("📈 <strong>Active Glycemic Titration</strong>: Doses for {} were titrated during stay. Schedule a follow-up outpatient endocrine visit within 7–14 days to monitor target glycemia and prevent hypoglycemia.".format(", ".join(changes)))
+                recs.append("🏠 <strong>Subacute Placement Coordination</strong>: Ensure immediate transfer of care summaries to transitional rehabilitation nursing.")
                 
             if not recs:
-                st.info("✅ Routine diabetic discharge protocol recommended. Coordinate standard post-discharge endocrinologist check-in within 30 days.")
+                st.info("✅ Routine discharge pathway indicated. Standard endocrine outpatient follow-up recommended within 30 days.")
             else:
                 for r in recs:
-                    st.markdown(f"<div style='background-color:#FFFFFF; padding:0.75rem 1rem; border-radius:8px; border:1px solid #E2E8F0; margin-bottom:0.5rem;'>{r}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='align-rec-tile'>{r}</div>", unsafe_allow_html=True)
+
 else:
-    st.warning("Please execute the Jupyter notebooks inside the 'Health-Care-Domain' folder first to generate the models under 'models/' directory.")
+    st.warning("Please ensure model files exist under the 'models/' directory.")
 
-# --- FOOTER & WELLNESS SECTION ---
-st.markdown("<hr>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align:center; margin-bottom:2rem;'>Our Wellness Philosophy</h3>", unsafe_allow_html=True)
-
-col_f1, col_f2, col_f3 = st.columns(3)
-
-with col_f1:
-    st.markdown("""
-    <div class="info-card">
-        <div class="info-icon">🛡️</div>
-        <div class="info-title">Preventative Medicine</div>
-        <div class="info-desc">Catch risk factors and subclinical abnormalities early using ML before they progress to overt clinical conditions.</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-with col_f2:
-    st.markdown("""
-    <div class="info-card">
-        <div class="info-icon">🧬</div>
-        <div class="info-title">Precision Health</div>
-        <div class="info-desc">No two bodies are identical. Our platform maps unique biomarker levels and lifestyles to patient risk classifications.</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-with col_f3:
-    st.markdown("""
-    <div class="info-card">
-        <div class="info-icon">🌿</div>
-        <div class="info-title">Integrative Wellness</div>
-        <div class="info-desc">Supporting healthy lifestyle behaviors, sleep hygiene, nutrition, and exercise as core pillars alongside medical care.</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-st.markdown("""
-<div style="text-align:center; padding:3rem 0; color:#64748B; font-size:12px; font-family:'Outfit', sans-serif;">
-    © 2026 Soulplanet Health & Wellness Portal. Built for Health Care Domain Clinical Diagnostics.
+# --- RICH NAVY SITE FOOTER ---
+st.markdown("""<div class="align-site-footer">
+<div class="align-footer-container">
+<div class="align-footer-top">
+<div>
+<div class="align-brand-wrap">
+<span style="font-family:'Cormorant Garamond', serif; font-size:46px; font-weight:400; color:#FFFFFF; line-height:0.9;">align<span style="color:#7FB3D5;">.</span></span>
 </div>
-""", unsafe_allow_html=True)
+<p class="align-eyebrow text-sky" style="margin-top: 8px;">Health &amp; Clinical Diagnostics &middot; Denver, Colorado</p>
+<p style="font-size: 13px; color: rgba(255, 255, 255, 0.75); max-width: 380px; line-height: 1.8; margin-top: 1rem;">Thoughtful, predictive healthcare algorithms.<br/>Supporting clinicians and patients on the path back to balance.</p>
+</div>
+<div>
+<p class="align-eyebrow" style="color: rgba(255, 255, 255, 0.6);">Evidence-Based Support</p>
+<span class="align-action-btn primary" style="font-size: 10px; padding: 12px 22px;">Denver Clinical Center Active</span>
+</div>
+</div>
+<div class="align-footer-grid">
+<div class="align-footer-col">
+<h4>Our Care</h4>
+<ul>
+<li>Cardiovascular Risk Profiling</li>
+<li>Diabetic Readmission Analysis</li>
+<li>Metabolic Biomarker Tracking</li>
+<li>Transitional Care Protocols</li>
+</ul>
+</div>
+<div class="align-footer-col">
+<h4>Clinical Suite</h4>
+<ul>
+<li>Random Forest Classifier (79.96%)</li>
+<li>XGBoost Readmission Engine</li>
+<li>Patient Registry Simulator</li>
+<li>Decision Support Guidelines</li>
+</ul>
+</div>
+<div class="align-footer-col">
+<h4>Practice</h4>
+<ul>
+<li>Meet Dr. Sarah Kim</li>
+<li>Denver Clinical Practice</li>
+<li>Board Governance</li>
+<li>Patient Testimonials</li>
+</ul>
+</div>
+<div class="align-footer-col">
+<h4>Contact &amp; Hours</h4>
+<ul>
+<li>1250 S. Pearl St., Suite 200</li>
+<li>Denver, CO 80210</li>
+<li>Mon&ndash;Fri &middot; 9:00 AM &ndash; 5:00 PM MT</li>
+<li>(303) 555-0142</li>
+</ul>
+</div>
+</div>
+<p class="align-footer-disclaimer">Clinical decision-support software provided for diagnostic assessment and educational review. Algorithm outputs are intended to complement, not replace, certified clinical judgment by a licensed medical practitioner.</p>
+<div class="align-footer-bottom">
+<span>&copy; 2026 Align Health Diagnostics. All rights reserved.</span>
+<span>Denver, Colorado &middot; Secure Clinical Architecture</span>
+</div>
+</div>
+</div>""", unsafe_allow_html=True)
