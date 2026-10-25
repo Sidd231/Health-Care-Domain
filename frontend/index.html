@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Align Health | Thoughtful Clinical Diagnostics & Care</title>
+  <meta name="description" content="Personalized predictive clinical health diagnostics in Denver, Colorado. Machine-learning backed cardiovascular risk profiling and diabetic readmission prevention.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+</head>
+<body>
+
+  <!-- STICKY SITE HEADER -->
+  <header class="site-header" id="siteHeader">
+    <div class="align-container nav-rail">
+      <a href="index.html" class="brand-wrap">
+        <svg class="brand-icon" viewBox="0 0 25 42" fill="none">
+          <path d="M17 2C-3 13 29 25 8 40" stroke="#1F3A4D" stroke-width="2.2" stroke-linecap="round"></path>
+          <path d="M22 4C2 15 34 27 13 42" stroke="#7FB3D5" stroke-width="1.8" opacity=".8" stroke-linecap="round"></path>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-title">align<span class="brand-dot">.</span></span>
+          <span class="brand-subtitle">Health &amp; Diagnostics</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link active">Overview</a></li>
+          <li><a href="heart.html" class="nav-link">Cardiovascular Suite</a></li>
+          <li><a href="diabetes.html" class="nav-link">Diabetic Readmission</a></li>
+          <li><a href="#clinical-director" class="nav-link">Meet Dr. Kim</a></li>
+          <li><a href="#patient-registry" class="nav-link">Registry Lookup</a></li>
+          <li><a href="#faqs" class="nav-link">Clinical FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <span class="badge-status">
+          <span class="pulse-dot"></span>
+          <span>ML Suite Active</span>
+        </span>
+        <a href="heart.html" class="btn btn-primary">Start Diagnosis</a>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Drawer -->
+    <div class="mobile-menu-drawer" id="mobileMenuDrawer">
+      <a href="index.html" class="nav-link active">Clinic Overview</a>
+      <a href="heart.html" class="nav-link">Cardiovascular Diagnostics (RF 79.96%)</a>
+      <a href="diabetes.html" class="nav-link">Diabetic Readmission Analysis (XGBoost)</a>
+      <a href="#clinical-director" class="nav-link">Meet Dr. Sarah Kim</a>
+      <a href="#patient-registry" class="nav-link">Patient Registry</a>
+      <a href="#faqs" class="nav-link">Clinical FAQ</a>
+      <a href="heart.html" class="btn btn-primary" style="margin-top: 1rem;">Run Assessment</a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="align-hero">
+    <div class="hero-mesh-decor"></div>
+    <div class="align-container hero-content">
+      <span class="eyebrow">Personalized Clinical Care &middot; Denver &amp; Regional Health</span>
+      <h1 class="hero-title">Move with ease.<br><span class="italic font-light">Live in alignment.</span></h1>
+      <p class="hero-desc">
+        Thoughtful, clinically-calibrated predictive analytics for the life you want to lead.
+        Combining internal medicine practice with machine learning decision support to prevent cardiovascular events and hospital readmissions.
+      </p>
+      <div class="hero-cta-group">
+        <a href="heart.html" class="btn btn-primary">Cardiovascular Diagnostic Suite &rarr;</a>
+        <a href="diabetes.html" class="btn btn-outline">Diabetic Readmission Engine &rarr;</a>
+      </div>
+      <p class="hero-tagline">Care that listens &middot; Diagnostic protocols tailored to you &middot; HIPAA Aligned</p>
+    </div>
+  </section>
+
+  <!-- DOCTOR PROFILE SECTION -->
+  <section class="section" id="clinical-director">
+    <div class="align-container">
+      <div class="split-grid">
+        <div class="doctor-image-frame reveal-on-scroll">
+          <img 
+            src="https://images.unsplash.com/photo-1594824813587-c1d4285b144e?auto=format&fit=crop&w=900&q=80" 
+            alt="Dr. Sarah Kim MD, Diagnostics Lead" 
+            class="doctor-img"
+          >
+          <p class="image-caption">Dr. Sarah Kim, MD &middot; Chief of Preventative Diagnostics</p>
+        </div>
+
+        <div class="doctor-text reveal-on-scroll">
+          <span class="eyebrow navy">A human approach to clinical precision</span>
+          <h2 class="section-title">Good care starts<br>with <span class="italic">being heard.</span></h2>
+          <p class="sub-hero-desc" style="margin-bottom: 1.25rem;">
+            You are more than an isolated set of symptoms or lab readouts. At Align Health, our clinical analytics protocol considers your holistic physiological picture&mdash;metabolic trends, lifestyle stressors, and cardiovascular biomarkers.
+          </p>
+          <p class="sub-hero-desc">
+            Together, we leverage machine learning decision-support algorithms to forecast risks, prevent hospital readmissions, and build tailored preventative strategies.
+          </p>
+
+          <div class="credentials-box">
+            <h3 class="credentials-title">Validated Clinical Credentials &amp; Governance</h3>
+            <ul class="credentials-list">
+              <li><span class="check-icon">&check;</span> Board Certified in Internal Medicine &amp; Preventative Cardiology</li>
+              <li><span class="check-icon">&check;</span> Trained Random Forest &amp; XGBoost Decision-Support Systems</li>
+              <li><span class="check-icon">&check;</span> HIPAA Compliant &amp; Clinically-Calibrated Risk Models</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECIALTY CARE MODULES GRID -->
+  <section class="section bg-secondary" id="care-suites">
+    <div class="align-container">
+      <div class="section-header-row reveal-on-scroll">
+        <div>
+          <span class="eyebrow">Find your way back to well</span>
+          <h2 class="section-title">Clinical Diagnostic Suites</h2>
+        </div>
+        <p class="section-subtitle">
+          Engineered to assist clinicians and patients with data-driven predictive forecasts before symptoms escalate.
+        </p>
+      </div>
+
+      <div class="specialty-grid">
+        <!-- Card 1: Cardiovascular -->
+        <div class="care-card reveal-on-scroll">
+          <span class="card-num">Suite 01 &middot; Active</span>
+          <h3 class="card-title">Cardiovascular Risk Profiling</h3>
+          <p class="card-desc">
+            Evaluates 20 distinct hemodynamic and lifestyle indicators—including blood pressure, lipid panels, BMI, fasting glucose, and exercise habits.
+          </p>
+          <div class="card-details-toggle">
+            <button class="card-details-btn" onclick="toggleCardDetails(this)">
+              <span>Clinical Protocol Details</span>
+              <span>+</span>
+            </button>
+            <div class="card-expanded-content">
+              Validated on clinical cohort datasets using a trained Random Forest Classifier (79.96% cross-validation accuracy). Produces continuous probability estimates and lifestyle mitigation actions.
+            </div>
+          </div>
+          <div class="card-link-action">
+            <a href="heart.html" class="btn btn-primary" style="width: 100%;">Launch Assessment &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Card 2: Diabetic Readmission -->
+        <div class="care-card reveal-on-scroll">
+          <span class="card-num">Suite 02 &middot; Active</span>
+          <h3 class="card-title">Diabetic Hospital Readmission</h3>
+          <p class="card-desc">
+            Forecasts 30-day inpatient readmission probabilities utilizing an XGBoost gradient-boosted engine evaluating medication titrations and encounter histories.
+          </p>
+          <div class="card-details-toggle">
+            <button class="card-details-btn" onclick="toggleCardDetails(this)">
+              <span>Clinical Protocol Details</span>
+              <span>+</span>
+            </button>
+            <div class="card-expanded-content">
+              Analyzes length of hospitalization, ICD-9 primary diagnostic classifications, number of lab assays, and specific pharmacological titrations (Metformin, Glipizide, Glyburide).
+            </div>
+          </div>
+          <div class="card-link-action">
+            <a href="diabetes.html" class="btn btn-primary" style="width: 100%;">Evaluate Readmission &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Card 3: Metabolic Harmony -->
+        <div class="care-card reveal-on-scroll">
+          <span class="card-num">Suite 03 &middot; Clinical Consultation</span>
+          <h3 class="card-title">Metabolic Harmony &amp; Longevity</h3>
+          <p class="card-desc">
+            Integrated endocrine monitoring, circadian sleep optimization, and longitudinal insulin kinetics designed to maintain balance and prevent chronic disease onset.
+          </p>
+          <div class="card-details-toggle">
+            <button class="card-details-btn" onclick="toggleCardDetails(this)">
+              <span>Clinical Protocol Details</span>
+              <span>+</span>
+            </button>
+            <div class="card-expanded-content">
+              In-clinic biomarker panel incorporating hs-CRP, fasting insulin, homocysteine assays, and continuous glucose monitoring calibration.
+            </div>
+          </div>
+          <div class="card-link-action">
+            <a href="#clinical-director" class="btn btn-outline" style="width: 100%;">In-Clinic Protocol &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY BANNER -->
+  <section class="section bg-sand">
+    <div class="align-container philosophy-banner reveal-on-scroll">
+      <span class="eyebrow navy">Our Clinical Philosophy</span>
+      <blockquote class="philosophy-quote">
+        &ldquo;True health is not merely the absence of acute symptoms, but an enduring state of physiological balance, metabolic vitality, and clinical clarity.&rdquo;
+      </blockquote>
+      <p class="philosophy-author">Dr. Sarah Kim, MD &middot; Denver Clinical Practice</p>
+    </div>
+  </section>
+
+  <!-- CLINICAL TECHNIQUES SECTION -->
+  <section class="section">
+    <div class="align-container">
+      <div class="section-header-row reveal-on-scroll">
+        <div>
+          <span class="eyebrow">The Align Method</span>
+          <h2 class="section-title">Four Pillars of Clinical Precision</h2>
+        </div>
+        <p class="section-subtitle">
+          How our clinical intelligence pipeline transforms raw laboratory readouts into clear, actionable patient trajectories.
+        </p>
+      </div>
+
+      <div class="techniques-list reveal-on-scroll">
+        <div class="technique-item">
+          <span class="technique-num">01 / INTAKE</span>
+          <h3 class="technique-name">Comprehensive Biomarker Profiling</h3>
+          <p class="technique-detail">
+            Standard clinical visits frequently overlook lifestyle and inflammatory indicators. We capture both hemodynamic metrics and habitual markers for complete context.
+          </p>
+        </div>
+
+        <div class="technique-item">
+          <span class="technique-num">02 / AI ENGINES</span>
+          <h3 class="technique-name">Multivariate Decision Support</h3>
+          <p class="technique-detail">
+            Trained Random Forest and XGBoost classifiers cross-validate patient parameters against thousands of longitudinal inpatient and outpatient health records.
+          </p>
+        </div>
+
+        <div class="technique-item">
+          <span class="technique-num">03 / PROTOCOL</span>
+          <h3 class="technique-name">Tailored Preventative Prescriptions</h3>
+          <p class="technique-detail">
+            Automated recommendations trigger specific clinical actions—ranging from apolipoprotein B testing to smoking cessation and transitional nurse tele-triage.
+          </p>
+        </div>
+
+        <div class="technique-item">
+          <span class="technique-num">04 / CONTINUITY</span>
+          <h3 class="technique-name">Long-Horizon Wellness Monitoring</h3>
+          <p class="technique-detail">
+            Continuous calibration ensures patient discharge pathways remain stable and preventative interventions are tracked across calendar quarters.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE PATIENT REGISTRY LOOKUP -->
+  <section class="section bg-secondary" id="patient-registry">
+    <div class="align-container">
+      <div class="section-header-row reveal-on-scroll">
+        <div>
+          <span class="eyebrow">Interactive Clinical Tool</span>
+          <h2 class="section-title">Simulated Patient Registry</h2>
+        </div>
+        <p class="section-subtitle">
+          Search demo records to view sample risk stratifications, diagnostic history, and discharged care plans.
+        </p>
+      </div>
+
+      <div class="registry-widget reveal-on-scroll">
+        <p class="form-label">
+          <span>Search by Patient ID or Name</span>
+          <span style="color: var(--muted-foreground); text-transform: none;">Try: "P-1042", "Sarah", "Chen", or "P-8831"</span>
+        </p>
+        <div class="registry-search-bar">
+          <input 
+            type="text" 
+            class="registry-input" 
+            id="registryInput" 
+            placeholder="Enter Patient Identifier (e.g. P-1042 or James Miller)..."
+          >
+          <button class="btn btn-primary" onclick="searchPatientRegistry()">Lookup Record</button>
+        </div>
+
+        <div class="registry-result-card" id="registryResult">
+          <!-- Populated via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS SLIDER -->
+  <section class="section">
+    <div class="align-container">
+      <div class="testimonial-card reveal-on-scroll">
+        <div class="quote-mark">&ldquo;</div>
+        <p class="testimonial-text" id="testimonialText">
+          Align Health changed how I think about my cardiovascular health. Instead of generic advice, their risk evaluation pinpointed exactly what I needed to change in my daily routine.
+        </p>
+        <p class="testimonial-author" id="testimonialAuthor">
+          Michael R., 54 &middot; Denver, CO &middot; Preventative Cardiology Patient
+        </p>
+        <div class="testimonial-dots">
+          <button class="testimonial-dot active" onclick="setTestimonial(0)"></button>
+          <button class="testimonial-dot" onclick="setTestimonial(1)"></button>
+          <button class="testimonial-dot" onclick="setTestimonial(2)"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLINICAL FAQ ACCORDION -->
+  <section class="section bg-secondary" id="faqs">
+    <div class="align-container">
+      <div class="section-header-row reveal-on-scroll">
+        <div>
+          <span class="eyebrow">Common Questions</span>
+          <h2 class="section-title">Clinical &amp; Technical FAQ</h2>
+        </div>
+      </div>
+
+      <div class="techniques-list reveal-on-scroll">
+        <div class="technique-item" style="cursor: pointer;" onclick="toggleFaq(this)">
+          <span class="technique-num">Q1</span>
+          <h3 class="technique-name">How accurate are the predictive models?</h3>
+          <p class="technique-detail">
+            The Cardiovascular Risk Profiler utilizes an optimized Random Forest classifier with an evaluated cross-validation accuracy of 79.96%. The Diabetic Readmission model utilizes an XGBoost multi-class classifier evaluated on 29 standardized clinical features.
+          </p>
+        </div>
+
+        <div class="technique-item" style="cursor: pointer;" onclick="toggleFaq(this)">
+          <span class="technique-num">Q2</span>
+          <h3 class="technique-name">Does this replace a medical consultation?</h3>
+          <p class="technique-detail">
+            No. This platform is a clinical decision-support architecture intended to assist healthcare practitioners and inform patients. Outputs complement certified clinical judgment and should always be discussed with a licensed physician.
+          </p>
+        </div>
+
+        <div class="technique-item" style="cursor: pointer;" onclick="toggleFaq(this)">
+          <span class="technique-num">Q3</span>
+          <h3 class="technique-name">How is patient biometric privacy protected?</h3>
+          <p class="technique-detail">
+            All data processed through our REST API undergoes in-memory tensor transformation with no unencrypted persistence of protected health information (PHI), following HIPAA technical safeguard standards.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="align-container">
+      <div class="footer-top">
+        <div>
+          <span class="footer-brand-title">align<span style="color: var(--sky);">.</span></span>
+          <p class="eyebrow" style="color: var(--sky); margin-top: 6px;">Health &amp; Clinical Diagnostics &middot; Denver, Colorado</p>
+          <p class="footer-desc">
+            Thoughtful, predictive healthcare algorithms supporting clinicians and patients on the path back to biological balance.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow" style="color: rgba(255, 255, 255, 0.6);">Validated Decision Support</p>
+          <a href="heart.html" class="btn btn-sky" style="font-size: 10px;">Denver Clinical Center Active</a>
+        </div>
+      </div>
+
+      <div class="footer-grid">
+        <div>
+          <h4 class="footer-col-title">Our Care</h4>
+          <ul class="footer-col-list">
+            <li><a href="heart.html">Cardiovascular Risk Profiling</a></li>
+            <li><a href="diabetes.html">Diabetic Readmission Analysis</a></li>
+            <li><a href="#care-suites">Metabolic Biomarker Tracking</a></li>
+            <li><a href="#care-suites">Transitional Care Protocols</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Clinical Suite</h4>
+          <ul class="footer-col-list">
+            <li>Random Forest Classifier (79.96%)</li>
+            <li>XGBoost Readmission Engine</li>
+            <li><a href="#patient-registry">Patient Registry Simulator</a></li>
+            <li><a href="#faqs">Decision Support Guidelines</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Practice</h4>
+          <ul class="footer-col-list">
+            <li><a href="#clinical-director">Meet Dr. Sarah Kim</a></li>
+            <li>Denver Clinical Practice</li>
+            <li>Board Governance</li>
+            <li>Patient Testimonials</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Contact &amp; Hours</h4>
+          <ul class="footer-col-list">
+            <li>1250 S. Pearl St., Suite 200</li>
+            <li>Denver, CO 80210</li>
+            <li>Mon&ndash;Fri &middot; 9:00 AM &ndash; 5:00 PM MT</li>
+            <li>(303) 555-0142</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="footer-disclaimer">
+        Clinical decision-support software provided for diagnostic assessment and educational review. Algorithm outputs are intended to complement, not replace, certified clinical judgment by a licensed medical practitioner.
+      </p>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Align Health Diagnostics. All rights reserved.</span>
+        <span>Denver, Colorado &middot; Secure Clinical Architecture</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
