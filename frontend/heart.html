@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cardiovascular Diagnostics | Align Health</title>
+  <meta name="description" content="Cardiovascular risk factor prediction powered by clinically-calibrated Random Forest machine learning models.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
+</head>
+<body>
+
+  <!-- STICKY SITE HEADER -->
+  <header class="site-header" id="siteHeader">
+    <div class="align-container nav-rail">
+      <a href="index.html" class="brand-wrap">
+        <svg class="brand-icon" viewBox="0 0 25 42" fill="none">
+          <path d="M17 2C-3 13 29 25 8 40" stroke="#1F3A4D" stroke-width="2.2" stroke-linecap="round"></path>
+          <path d="M22 4C2 15 34 27 13 42" stroke="#7FB3D5" stroke-width="1.8" opacity=".8" stroke-linecap="round"></path>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-title">align<span class="brand-dot">.</span></span>
+          <span class="brand-subtitle">Health &amp; Diagnostics</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Overview</a></li>
+          <li><a href="heart.html" class="nav-link active">Cardiovascular Suite</a></li>
+          <li><a href="diabetes.html" class="nav-link">Diabetic Readmission</a></li>
+          <li><a href="index.html#clinical-director" class="nav-link">Meet Dr. Kim</a></li>
+          <li><a href="index.html#patient-registry" class="nav-link">Registry Lookup</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <span class="badge-status">
+          <span class="pulse-dot"></span>
+          <span>RF 79.96% Accuracy</span>
+        </span>
+        <a href="diabetes.html" class="btn btn-outline">Diabetic Suite &rarr;</a>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Drawer -->
+    <div class="mobile-menu-drawer" id="mobileMenuDrawer">
+      <a href="index.html" class="nav-link">Clinic Overview</a>
+      <a href="heart.html" class="nav-link active">Cardiovascular Diagnostics (RF 79.96%)</a>
+      <a href="diabetes.html" class="nav-link">Diabetic Readmission Analysis (XGBoost)</a>
+      <a href="index.html#clinical-director" class="nav-link">Meet Dr. Sarah Kim</a>
+      <a href="index.html#patient-registry" class="nav-link">Patient Registry</a>
+    </div>
+  </header>
+
+  <!-- SUB-HERO BANNER -->
+  <section class="sub-hero">
+    <div class="align-container">
+      <div class="sub-hero-grid">
+        <div class="sub-hero-content">
+          <span class="eyebrow">Diagnostic Suite 01 &middot; Clinical Decision Support</span>
+          <h1 class="sub-hero-title">Cardiovascular Risk <span class="italic font-light">Profile Analysis</span></h1>
+          <p class="sub-hero-desc">
+            Complete the clinical biometric parameters below to evaluate heart disease likelihood. Our validated Random Forest Classifier cross-references arterial blood pressure, lipid panels, metabolic indices, and chronic lifestyle markers.
+          </p>
+        </div>
+        <div class="sub-hero-meta">
+          <span class="badge-status">Random Forest Classifier</span>
+          <span style="font-size: 11px; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.1em;">20 Clinical Features</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIAGNOSTIC EVALUATION WORKSPACE -->
+  <main class="diagnostic-container">
+    <div class="align-container">
+      
+      <!-- Preset Demo Buttons -->
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted-foreground); align-self: center;">Quick Load Clinical Profiles:</span>
+        <button type="button" class="btn btn-sky" style="padding: 6px 14px; font-size: 10px;" onclick="loadPresetHeart('healthy')">
+          Sample: Low Risk Profile
+        </button>
+        <button type="button" class="btn btn-sky" style="padding: 6px 14px; font-size: 10px;" onclick="loadPresetHeart('elevated')">
+          Sample: Elevated Risk Profile
+        </button>
+      </div>
+
+      <div class="diagnostic-layout">
+        
+        <!-- FORM WORKSPACE -->
+        <div class="form-card">
+          <form id="heartForm" onsubmit="handleHeartSubmit(event)">
+            
+            <!-- SECTION 1: CORE DEMOGRAPHICS -->
+            <div class="form-group-title">
+              <span>Core Patient Demographics</span>
+              <span>1 / 3</span>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-control-wrap">
+                <label class="form-label" for="heartAge">
+                  <span>Patient Age (Years)</span>
+                  <span class="form-value-badge" id="heartAgeVal">48</span>
+                </label>
+                <input type="range" class="form-range" id="heartAge" min="1" max="110" value="48" oninput="updateRangeVal('heartAge', 'heartAgeVal')">
+              </div>
+
+              <div class="form-control-wrap">
+                <label class="form-label" for="heartGender">Biological Sex / Gender</label>
+                <select class="form-select" id="heartGender" required>
+                  <option value="Male" selected>Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-control-wrap">
+                <label class="form-label" for="heartBmi">Body Mass Index (BMI)</label>
+                <input type="number" class="form-input" id="heartBmi" min="10.0" max="65.0" step="0.1" value="25.8" required>
+              </div>
+
+              <div class="form-control-wrap">
+                <label class="form-label" for="heartDiabetes">Diagnosed with Diabetes</label>
+                <select class="form-select" id="heartDiabetes" required>
+                  <option value="No" selected>No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- SECTION 2: PRIMARY HEMODYNAMIC VITALS -->
+            <div class="form-group-title" style="margin-top: 1.5rem;">
+              <span>Primary Hemodynamic &amp; Lipid Vitals</span>
+              <span>2 / 3</span>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-control-wrap">
+                <label class="form-label" for="heartBp">Systolic Blood Pressure (mmHg)</label>
+                <input type="number" class="form-input" id="heartBp" min="70.0" max="250.0" step="1.0" value="126.0" required>
+              </div>
+
+              <div class="form-control-wrap">
+                <label class="form-label" for="heartChol">Total Serum Cholesterol (mg/dL)</label>
+                <input type="number" class="form-input" id="heartChol" min="80.0" max="500.0" step="1.0" value="205.0" required>
+              </div>
+            </div>
+
+            <!-- SECTION 3: COLLAPSIBLE ADVANCED BIOMARKERS -->
+            <button type="button" class="collapsible-trigger" id="heartAdvancedTrigger" onclick="toggleAdvancedHeart()">
+              <span>Lifestyle Factors &amp; Secondary Biomarker Assays (14 Metrics)</span>
+              <span class="chevron">&darr;</span>
+            </button>
+
+            <div class="collapsible-content" id="heartAdvancedContent">
+              <div class="form-grid-2">
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartSleep">
+                    <span>Average Nightly Sleep (Hours)</span>
+                    <span class="form-value-badge" id="heartSleepVal">7.0</span>
+                  </label>
+                  <input type="range" class="form-range" id="heartSleep" min="2.0" max="14.0" step="0.5" value="7.0" oninput="updateRangeVal('heartSleep', 'heartSleepVal')">
+                </div>
+
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartExercise">Physical Exercise Habits</label>
+                  <select class="form-select" id="heartExercise">
+                    <option value="Low">Low (&lt;60 min/wk)</option>
+                    <option value="Medium" selected>Medium (60-150 min/wk)</option>
+                    <option value="High">High (&gt;150 min/wk)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartSmoking">Active Tobacco Smoking</label>
+                  <select class="form-select" id="heartSmoking">
+                    <option value="No" selected>No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </div>
+
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartAlcohol">Alcohol Consumption</label>
+                  <select class="form-select" id="heartAlcohol">
+                    <option value="0">None / Minimal</option>
+                    <option value="Low" selected>Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartStress">Self-Reported Stress Level</label>
+                  <select class="form-select" id="heartStress">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartSugar">Refined Sugar Intake</label>
+                  <select class="form-select" id="heartSugar">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartTrig">Serum Triglycerides (mg/dL)</label>
+                  <input type="number" class="form-input" id="heartTrig" min="40" max="600" value="150">
+                </div>
+
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartFbs">Fasting Blood Sugar (mg/dL)</label>
+                  <input type="number" class="form-input" id="heartFbs" min="40" max="300" value="96">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartCrp">C-Reactive Protein (CRP) (mg/L)</label>
+                  <input type="number" class="form-input" id="heartCrp" min="0.0" max="30.0" step="0.1" value="1.4">
+                </div>
+
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartHomo">Homocysteine Level (&micro;mol/L)</label>
+                  <input type="number" class="form-input" id="heartHomo" min="2.0" max="60.0" step="0.1" value="10.2">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartFamily">Family History of CVD</label>
+                  <select class="form-select" id="heartFamily">
+                    <option value="No" selected>No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </div>
+
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartHbp">Hypertension Diagnosis History</label>
+                  <select class="form-select" id="heartHbp">
+                    <option value="No" selected>No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartHdl">Suboptimal Low HDL Cholesterol</label>
+                  <select class="form-select" id="heartHdl">
+                    <option value="No" selected>No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </div>
+
+                <div class="form-control-wrap">
+                  <label class="form-label" for="heartLdl">Elevated High LDL Cholesterol</label>
+                  <select class="form-select" id="heartLdl">
+                    <option value="No" selected>No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" class="btn-submit-eval" id="heartSubmitBtn">
+              <span class="spinner" id="heartSpinner"></span>
+              <span id="heartBtnText">Run Cardiovascular Risk Assessment &rarr;</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- RESULTS STICKY PANEL -->
+        <aside class="results-panel">
+          
+          <!-- INITIAL PLACEHOLDER STATE -->
+          <div class="result-placeholder" id="heartPlaceholder">
+            <div class="placeholder-icon">🩺</div>
+            <h3 class="placeholder-title">Awaiting Clinical Data</h3>
+            <p class="placeholder-desc">
+              Adjust patient vitals on the left and click &ldquo;Run Cardiovascular Risk Assessment&rdquo; to evaluate with the Random Forest model.
+            </p>
+          </div>
+
+          <!-- EVALUATED RESULT CARD (HIDDEN INITIALLY) -->
+          <div class="result-card fade-in" id="heartResultCard" style="display: none;">
+            <p class="result-eyebrow">Diagnostic Assessment Result</p>
+            <h3 class="result-status-title" id="heartStatusTitle">Normal Cardiovascular Risk Profile</h3>
+
+            <div class="meter-wrap">
+              <div class="meter-header">
+                <span>Cardiovascular Risk Factor Probability</span>
+                <strong id="heartProbText">0.0%</strong>
+              </div>
+              <div class="meter-track">
+                <div class="meter-fill" id="heartMeterFill"></div>
+              </div>
+            </div>
+
+            <p class="result-desc" id="heartClinicalDesc"></p>
+
+            <div class="recommendations-box">
+              <h4 class="recs-title">Personalized Clinical Recommendations</h4>
+              <div id="heartRecsList"></div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- RICH NAVY FOOTER -->
+  <footer class="site-footer">
+    <div class="align-container">
+      <div class="footer-top">
+        <div>
+          <span class="footer-brand-title">align<span style="color: var(--sky);">.</span></span>
+          <p class="eyebrow" style="color: var(--sky); margin-top: 6px;">Cardiovascular Clinical Suite &middot; Denver, Colorado</p>
+          <p class="footer-desc">
+            Algorithmic cardiovascular risk scoring calibrated for preventative primary care and clinical cardiometabolic oversight.
+          </p>
+        </div>
+        <div>
+          <a href="diabetes.html" class="btn btn-sky" style="font-size: 10px;">Switch to Diabetic Readmission Suite &rarr;</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Align Health Diagnostics. All rights reserved.</span>
+        <span>Decision Support v2.4 &middot; Denver, CO</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/main.js"></script>
+  <script src="js/heart.js"></script>
+</body>
+</html>
