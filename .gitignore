@@ -126,3 +126,28 @@ Thumbs.db
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Environment variables & secrets
+.env
+.env.*
+*.env
+
+# Large datasets & raw data downloads (prevents pushing multi-MB/GB data)
+*.csv
+*.tsv
+*.zip
+*.tar.gz
+data/
+datasets/
+
+# Frontend / Node tooling
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.parcel-cache/
+
+# Logs & temp files
+*.log
+temp/
+tmp/
