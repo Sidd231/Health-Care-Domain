@@ -4,3 +4,5 @@ numpy
 scikit-learn
 xgboost
 kagglehub
+flask
+flask-cors
